@@ -1,0 +1,275 @@
+/* ── Reset & base ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:       #1a2744;
+  --navy-light: #243460;
+  --gold:       #c9a227;
+  --bg:         #f2f3f6;
+  --white:      #ffffff;
+  --text:       #1e1e2e;
+  --muted:      #666676;
+  --border:     #dce0e8;
+  --radius:     8px;
+  --shadow:     0 2px 14px rgba(0, 0, 0, 0.09);
+}
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── Layout ──────────────────────────────────────────────────────────────── */
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 5rem;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+header {
+  text-align: center;
+  padding: 2.8rem 0 2.2rem;
+}
+
+.logo-area {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-emblem {
+  font-size: 3rem;
+  line-height: 1;
+  color: var(--navy);
+}
+
+.logo-text h1 {
+  font-size: 1.75rem;
+  color: var(--navy);
+  letter-spacing: .03em;
+  text-align: left;
+}
+
+.logo-text .subtitle {
+  font-size: 1rem;
+  color: var(--gold);
+  font-style: italic;
+  text-align: left;
+  margin-top: 2px;
+}
+
+/* ── Cards ───────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--navy);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  margin-bottom: 1.25rem;
+}
+
+.card h2 {
+  font-size: 1.1rem;
+  color: var(--navy);
+  margin-bottom: 1.4rem;
+}
+
+.info-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  font-size: .88rem;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.info-card h3 {
+  font-size: .92rem;
+  color: var(--navy);
+  margin-bottom: .6rem;
+}
+
+.info-card ul   { padding-left: 1.2rem; }
+.info-card li   { margin-bottom: .35rem; }
+
+.info-card code {
+  background: var(--bg);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: .88em;
+  color: var(--navy);
+}
+
+.sc { font-variant: small-caps; }
+
+/* ── Drop zone ───────────────────────────────────────────────────────────── */
+.drop-zone {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  margin-bottom: 1.6rem;
+}
+
+.drop-zone.drag-over {
+  border-color: var(--navy);
+  background: rgba(26, 39, 68, .04);
+}
+
+.drop-zone.has-file {
+  border-color: var(--gold);
+  background: rgba(201, 162, 39, .05);
+}
+
+.drop-icon   { font-size: 2.5rem; margin-bottom: .5rem; line-height: 1; }
+.drop-text   { font-size: .98rem; color: var(--text); margin-bottom: .2rem; }
+.drop-sub    { font-size: .82rem; color: var(--muted); margin: .35rem 0; }
+
+.file-name {
+  margin-top: .7rem;
+  font-size: .88rem;
+  color: var(--navy);
+  font-weight: bold;
+  word-break: break-all;
+}
+
+/* ── Footnote range ──────────────────────────────────────────────────────── */
+.fn-range {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.fn-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+.fn-field label {
+  font-size: .8rem;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  letter-spacing: .02em;
+}
+
+.fn-field input[type="number"] {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: .62rem .75rem;
+  font-size: 1.05rem;
+  font-family: Georgia, serif;
+  color: var(--text);
+  width: 100%;
+  transition: border-color .15s, box-shadow .15s;
+  -moz-appearance: textfield;
+}
+
+.fn-field input[type="number"]::-webkit-inner-spin-button,
+.fn-field input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+.fn-field input[type="number"]:focus {
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(26, 39, 68, .12);
+}
+
+.fn-sep {
+  font-size: 1.4rem;
+  color: var(--muted);
+  padding-bottom: .55rem;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .7rem 1.5rem;
+  border-radius: var(--radius);
+  font-size: .95rem;
+  font-family: Georgia, serif;
+  cursor: pointer;
+  border: none;
+  transition: background .15s, opacity .15s;
+  text-decoration: none;
+}
+
+.btn-row {
+  display: flex;
+  gap: .75rem;
+}
+
+.btn-primary {
+  background: var(--navy);
+  color: var(--white);
+  flex: 1;
+  padding: .9rem;
+  font-size: 1rem;
+  letter-spacing: .02em;
+}
+
+.btn-primary:hover:not(:disabled) { background: var(--navy-light); }
+.btn-primary:disabled              { opacity: .45; cursor: not-allowed; }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--navy);
+  border: 1.5px solid var(--navy);
+  flex: 1;
+  padding: .9rem;
+  font-size: 1rem;
+  letter-spacing: .02em;
+}
+
+.btn-secondary:hover:not(:disabled) { background: rgba(26, 39, 68, .06); }
+.btn-secondary:disabled              { opacity: .45; cursor: not-allowed; }
+
+.btn-outline {
+  background: transparent;
+  color: var(--navy);
+  border: 1.5px solid var(--navy);
+  font-size: .85rem;
+  padding: .45rem 1.1rem;
+}
+
+.btn-outline:hover { background: rgba(26, 39, 68, .06); }
+
+/* ── Spinner ─────────────────────────────────────────────────────────────── */
+.spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255, 255, 255, .35);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Error message ───────────────────────────────────────────────────────── */
+.error-msg {
+  background: #fff2f2;
+  border: 1px solid #f5c6c6;
+  color: #b03030;
+  border-radius: var(--radius);
+  padding: .7rem 1rem;
+  font-size: .88rem;
+  margin-bottom: 1rem;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+}

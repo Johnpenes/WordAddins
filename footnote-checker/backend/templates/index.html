@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCU Law Review — Footnote Formatter</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+  <div class="container">
+
+    <header>
+      <div class="logo-area">
+        <div class="logo-emblem">&#9878;</div>
+        <div class="logo-text">
+          <h1>SCU Law Review</h1>
+          <p class="subtitle">Footnote Formatter</p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <form id="upload-form" enctype="multipart/form-data">
+
+        <div class="card">
+          <h2>Upload Document</h2>
+
+          <!-- Drop zone -->
+          <div id="drop-zone" class="drop-zone">
+            <div class="drop-icon">&#128196;</div>
+            <p class="drop-text">Drag &amp; drop your <strong>.docx</strong> file here</p>
+            <p class="drop-sub">or</p>
+            <label class="btn btn-outline" for="docx-input">Browse File</label>
+            <input type="file" id="docx-input" name="docx" accept=".docx" hidden />
+            <p id="file-name" class="file-name"></p>
+          </div>
+
+          <!-- Footnote range -->
+          <div class="fn-range">
+            <div class="fn-field">
+              <label for="start-fn">Starting Footnote</label>
+              <input type="number" id="start-fn" name="start_fn"
+                     min="1" value="" placeholder="e.g. 129" required />
+            </div>
+            <div class="fn-sep">&mdash;</div>
+            <div class="fn-field">
+              <label for="end-fn">Ending Footnote</label>
+              <input type="number" id="end-fn" name="end_fn"
+                     min="1" value="" placeholder="e.g. 149" required />
+            </div>
+          </div>
+
+          <div id="error-msg" class="error-msg" hidden></div>
+
+          <div class="btn-row">
+            <button type="submit" id="submit-btn" class="btn btn-primary" disabled>
+              <span id="btn-text">Generate PDF</span>
+              <span id="btn-spinner" class="spinner" hidden></span>
+            </button>
+            <button type="button" id="xlsx-btn" class="btn btn-secondary" disabled>
+              <span id="xlsx-text">Export Excel</span>
+              <span id="xlsx-spinner" class="spinner" hidden></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Info panel -->
+        <div class="info-card">
+          <h3>About this tool</h3>
+          <ul>
+            <li>
+              Reads directly from the <code>.docx</code> XML — preserving
+              <em>italics</em>, <span class="sc">Small Caps</span>, and
+              <strong>bold</strong> text that plain-text export loses.
+            </li>
+            <li>
+              Splits each footnote into individual citation sources using
+              legal citation-signal detection
+              (<em>See</em>, <em>Id.</em>, semicolons, etc.).
+            </li>
+            <li>
+              Returns either a formatted PDF table or Excel spreadsheet ready for cite-checking.
+            </li>
+            <li>
+              Commentary-only footnotes (no detectable citation) are included
+              at the end with a note.
+            </li>
+          </ul>
+        </div>
+
+      </form>
+    </main>
+
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
