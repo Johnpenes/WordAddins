@@ -820,6 +820,42 @@ def _label_from_plain(plain_text):
 
     return _fs_safe(plain[:60])
 
+def _author_section_from_plain(author_raw):
+    """Return `Last` or `Last1 & Last2` from a plain-text author block."""
+    author_raw = _SIGNAL_PREFIX_RE.sub("", author_raw.strip()).strip().rstrip(",")
+    if not author_raw:
+        return ""
+
+    norm = re.sub(r"\s+(?:and|&)\s+", " & ", author_raw, flags=re.IGNORECASE)
+    parts = [p.strip() for p in norm.split(" & ") if p.strip()]
+
+    last_names = []
+    for part in parts:
+        cleaned = re.sub(r"\s+", " ", part.strip().strip(","))
+        if not cleaned:
+            continue
+        words = cleaned.split()
+        last_names.append(_fs_safe(words[-1], 20))
+
+    return " & ".join(last_names)
+
+def _internet_author_and_title(plain):
+    """
+    Best-effort parser for internet/article-like citations of the form:
+      Title, AUTHOR NAME (n.d./year), URL ...
+    Returns (author_section, title).
+    """
+    before_url = re.split(r"https?://", plain, maxsplit=1, flags=re.IGNORECASE)[0].strip().rstrip(",")
+    m = re.match(
+        r"^(?P<title>.+?),\s*(?P<author>[^,]+?)\s*\((?:n\.d\.|\d{4})\)\s*$",
+        before_url,
+        re.IGNORECASE,
+    )
+    if m:
+        title = _fs_safe(m.group("title").strip(), 80)
+        author_section = _author_section_from_plain(m.group("author"))
+        return author_section, title
+    return "", ""
 
 def _suggest_filename(fn_num, src_runs, classification, root_info=None, supra_ref_label=None):
     """
@@ -878,7 +914,12 @@ def _suggest_filename(fn_num, src_runs, classification, root_info=None, supra_re
     # ── Statute (Rule 12) ─────────────────────────────────────────────────
     # Preserve § symbol, U.S.C.A. dots, etc. — only strip the trailing year
     if "Rule 12" in classification:
-        stat = re.sub(r"\(\d{4}\).*$", "", plain).strip()
+        # Keep only the main statute reference and strip subsection / commentary parentheticals.
+        stat_m = re.search(r"(\d+\s+U\.S\.C\.?\s+§+\s*\d+)", plain)
+        if stat_m:
+            stat = stat_m.group(1)
+        else:
+            stat = re.sub(r"\s*\([^)]*\)", "", plain).strip()
         stat = _fs_safe(stat, 55)
         return f"{prefix}_{stat}" if stat else prefix
 
@@ -893,12 +934,7 @@ def _suggest_filename(fn_num, src_runs, classification, root_info=None, supra_re
         # Strip any leading citation signal (e.g. "E.g.,", "See generally,")
         author_raw = _SIGNAL_PREFIX_RE.sub("", author_raw).strip().rstrip(",").strip()
         # Use last word as last name (natural order: "Oliver Kunzler" → "Kunzler")
-        if author_raw:
-            name_part   = author_raw.split(",")[0].strip()
-            words       = name_part.split()
-            author_last = _fs_safe(words[-1], 20) if words else ""
-        else:
-            author_last = ""
+        author_last = _author_section_from_plain(author_raw)
         title_raw = italic_text.split(",")[0] if italic_text else ""
         title     = _fs_safe(title_raw, 50)
         return author_last, title
@@ -912,15 +948,23 @@ def _suggest_filename(fn_num, src_runs, classification, root_info=None, supra_re
     # Many online articles have a clear author + italic title — detect that
     # structure and treat them identically to journal articles.
     if "Rule 18" in classification:
+        #First, try article-like internet citations where the title precedes the author.
+        author_section, title = _internet_author_and_title(plain)
+        if author_section or title:
+            return "_".join(p for p in [prefix, author_section, title] if p)
+
+        # Next, handle sources that still expose a conventional author + italic title structure.
         has_non_italic = any(t.strip() and not p.get("italic") for t, p in src_runs)
         if has_non_italic and italic_text:
             author_last, title = _author_and_title()
             return "_".join(p for p in [prefix, author_last, title] if p)
-        # Bare URL or no clear structure
+
+        # Bare URL or no clear structure.
         title_text = re.sub(r"https?://\S+", "", plain).strip()
+        title_text = re.sub(r"\(last visited[^)]*\)", "", title_text, flags=re.IGNORECASE).strip().rstrip(",")
         title_text = re.sub(r"^(?:See|Cf|But\s+see|Accord)[,.]?\s+",
                             "", title_text, flags=re.IGNORECASE)
-        title = _fs_safe(title_text, 55) or "Online Source"
+        title = _fs_safe(title_text, 80) or "Online Source"
         return f"{prefix}_{title}"
 
     # ── Administrative / regulatory (Rule 14) ────────────────────────────
