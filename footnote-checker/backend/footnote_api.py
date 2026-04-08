@@ -6,7 +6,7 @@ import tempfile
 import shutil
 import re
 
-from footnote_processor import _build_rows, split_sources, assign_source_runs, _classify_source, _suggest_filename, _get_body_sentence
+from footnote_processor import _build_rows, split_sources, assign_source_runs, _classify_source, _suggest_filename, _extract_display_name, _get_body_sentence
 from lxml import etree
 
 
@@ -228,6 +228,7 @@ def _process_single_footnote(fn: dict, body_contexts: dict) -> dict:
             rules = []
 
         file_label = _suggest_filename(number, part_runs, classification) if part_runs else ""
+        display_name = _extract_display_name(part_runs, classification) if part_runs else None
 
         sources.append(
             {
@@ -236,6 +237,7 @@ def _process_single_footnote(fn: dict, body_contexts: dict) -> dict:
                 "rules": rules,
                 "warnings": [],
                 "fileLabel": file_label or "",
+                "displayName": display_name,
             }
         )
 
@@ -259,6 +261,7 @@ def _process_single_footnote(fn: dict, body_contexts: dict) -> dict:
                     "rules": ([classification] if isinstance(classification, str) else classification) if classification else [],
                     "warnings": [],
                     "fileLabel": _suggest_filename(number, src_runs, classification) or "",
+                    "displayName": _extract_display_name(src_runs, classification),
                 }
             ]
         else:
@@ -269,6 +272,7 @@ def _process_single_footnote(fn: dict, body_contexts: dict) -> dict:
                     "rules": [],
                     "warnings": [],
                     "fileLabel": "",
+                    "displayName": None,
                 }
             ]
 

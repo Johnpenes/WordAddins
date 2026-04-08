@@ -256,6 +256,42 @@ const App = () => {
   };
 
   const current = data[currentIndex];
+
+  const renderSearchLink = (src: any) => {
+    const name: string = src?.displayName;
+    if (!name) return null;
+    const isUrl = name.startsWith("http://") || name.startsWith("https://");
+    const href = isUrl ? name : `https://www.google.com/search?q=${encodeURIComponent(name)}`;
+    const label = isUrl ? name : `Search: ${name}`;
+    return (
+      <div style={{ marginTop: 8, fontSize: 12 }}>
+        <a href={href} target="_blank" rel="noopener noreferrer">
+          {label}
+        </a>
+      </div>
+    );
+  };
+
+  const isBackReference = (src: any): boolean =>
+    Array.isArray(src?.rules) &&
+    src.rules.some((r: string) => r.includes("Rule 4.1") || r.includes("Rule 4.2"));
+
+  const renderFileLabel = (src: any) => {
+    if (!src?.fileLabel) return null;
+    if (isBackReference(src)) {
+      return (
+        <div style={{ marginTop: 8, fontSize: 12, color: "#888" }}>
+          <strong>Suggested File Name:</strong> N/A — check root footnote
+        </div>
+      );
+    }
+    return (
+      <div style={{ marginTop: 8, fontSize: 12 }}>
+        <strong>Suggested File Name:</strong> {String(src.fileLabel)}
+      </div>
+    );
+  };
+
   const renderRuns = (runs: any[]) => {
     if (!Array.isArray(runs) || runs.length === 0) return null;
 
@@ -365,11 +401,9 @@ const App = () => {
                   </div>
                 )}
 
-                {src?.fileLabel && (
-                  <div style={{ marginTop: 8, fontSize: 12 }}>
-                    <strong>Suggested File:</strong> {String(src.fileLabel)}
-                  </div>
-                )}
+                {renderFileLabel(src)}
+
+                {renderSearchLink(src)}
               </div>
             ))
           ) : Array.isArray(current.sources) && current.sources.length === 1 ? (
@@ -392,11 +426,9 @@ const App = () => {
                 </div>
               )}
 
-              {current.sources[0]?.fileLabel && (
-                <div style={{ marginTop: 8, fontSize: 12 }}>
-                  <strong>Suggested File:</strong> {String(current.sources[0].fileLabel)}
-                </div>
-              )}
+              {renderFileLabel(current.sources[0])}
+
+              {renderSearchLink(current.sources[0])}
             </div>
           ) : (
             <div style={{ fontSize: 12, color: "#666" }}>No split sources for this footnote yet.</div>

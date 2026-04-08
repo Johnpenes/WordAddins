@@ -857,6 +857,115 @@ def _internet_author_and_title(plain):
         return author_section, title
     return "", ""
 
+def _strip_commentary(text):
+    """
+    Clean a citation string for use in filenames and search queries:
+      1. Remove pincite — the extra page number between the first page and the
+         year paren, e.g. "50 L. Rev. 1, 5 (2022)" → "50 L. Rev. 1 (2022)".
+      2. Remove trailing prose commentary parentheticals after the year paren,
+         e.g. "(stating that '...')" is dropped.
+
+    If no year paren is found the text is returned as-is (trimmed).
+    """
+    # Strip pincite: ", <digits>" immediately before the year paren
+    text = re.sub(r',\s*\d+\s*(?=\(\d{4}\))', '', text)
+    m = re.search(r'\(\d{4}\)', text)
+    if m:
+        return text[:m.end()].rstrip(".,; ")
+    return text.strip()
+
+
+def _extract_author_and_title(runs):
+    """
+    Shared extraction kernel used by both _extract_display_name and
+    _suggest_filename.
+
+    Walks the run list once and returns:
+      author_raw  – full author string, signal-prefix stripped, trailing
+                    punctuation cleaned.  Suitable for display (pass through
+                    _author_section_from_plain to get last-name-only for filenames).
+      title_raw   – full italic title string (everything in italics).
+                    For books this is the entire title; for articles the italic
+                    span typically contains only the article title.
+      post_italic – non-italic text that appears after the italic title block.
+                    For Rule 16 articles this carries the vol / journal / year.
+
+    None of the three strings are truncated or sanitised here; callers apply
+    _fs_safe / truncation as needed.
+    """
+    # ── Author: contiguous non-italic runs before the first italic run ────
+    author_buf = []
+    for text, props in runs:
+        if props.get("italic"):
+            break
+        author_buf.append(text)
+    author_raw = _SIGNAL_PREFIX_RE.sub(
+        "", "".join(author_buf).strip().rstrip(",").strip()
+    ).strip().rstrip(",").strip()
+
+    # ── Title: all italic text ────────────────────────────────────────────
+    title_raw = "".join(t for t, p in runs if p.get("italic")).strip()
+
+    # ── Post-italic suffix (vol / journal / year for Rule 16) ────────────
+    past_italic = False
+    suffix_buf = []
+    for text, props in runs:
+        if props.get("italic"):
+            past_italic = True
+        elif past_italic:
+            suffix_buf.append(text)
+    post_italic = "".join(suffix_buf).strip().lstrip(",").strip()
+
+    return author_raw, title_raw, post_italic
+
+
+def _extract_display_name(runs, classification):
+    """
+    Return a string for the hyperlink, or None if this source should not have one.
+
+    Priority rule (applies to ALL classification types):
+      If the source text contains a URL, return that URL directly so the
+      frontend can link to it instead of building a Google search query.
+
+    No hyperlink: Rule 4.1, 4.2, 10, 11, 12, 12.9, 14, NOTE/ambiguous.
+    Google-search hyperlink (when no URL present):
+      Rule 15 (Books)        → Full author name + full italic title
+      Rule 16 (Journal arts) → Full author + italic title + vol/journal/year
+    """
+    cls_str = classification if isinstance(classification, str) else " ".join(classification)
+
+    NO_LINK = ("Rule 4.1", "Rule 4.2", "Rule 10", "Rule 11",
+               "Rule 12", "Rule 12.9", "Rule 14")
+    if any(r in cls_str for r in NO_LINK):
+        return None
+
+    plain = "".join(t for t, _ in runs).strip()
+
+    # ── URL present in source → link directly, regardless of rule type ────
+    url_m = re.search(r"https?://\S+", plain, re.IGNORECASE)
+    if url_m:
+        return url_m.group(0).rstrip(".,;)")
+
+    # No URL — only produce a Google search link for books and articles.
+    if not any(r in cls_str for r in ("Rule 15", "Rule 16")):
+        return None
+
+    author_raw, title_raw, _ = _extract_author_and_title(runs)
+
+    # ── Book (Rule 15): full author name + full italic title ──────────────
+    if "Rule 15" in cls_str:
+        parts = [p for p in [author_raw, title_raw] if p]
+        return " ".join(parts) or None
+
+    # ── Journal article (Rule 16): strip signal prefix and trailing commentary,
+    #    return the clean citation string as-is (author, title, vol/journal/year)
+    if "Rule 16" in cls_str:
+        clean = _SIGNAL_PREFIX_RE.sub("", plain).strip()
+        return _strip_commentary(clean) or None
+
+    return None
+
+
 def _suggest_filename(fn_num, src_runs, classification, root_info=None, supra_ref_label=None):
     """
     Suggest a file-label string for a source entry.
@@ -882,8 +991,6 @@ def _suggest_filename(fn_num, src_runs, classification, root_info=None, supra_re
         return f"{prefix}_Id"
 
     # ── supra ─────────────────────────────────────────────────────────────
-    # supra_ref_label: pre-computed canonical label of the referenced footnote
-    # (passed in from _build_rows after resolving "supra note N")
     if re.search(r"\bsupra\b", plain, re.IGNORECASE):
         note_m = re.search(r"\bsupra\s+note\s+(\d+)\b", plain, re.IGNORECASE)
         ref_fn = note_m.group(1) if note_m else None
@@ -899,22 +1006,17 @@ def _suggest_filename(fn_num, src_runs, classification, root_info=None, supra_re
 
     # ── Case (Rule 10) ────────────────────────────────────────────────────
     if "Rule 10" in classification:
-        # Preserve case name punctuation (v., commas, etc.) — only strip
-        # trailing page number references
         if re.search(r"\bv\.\s", italic_text):
             cn = re.sub(r",\s*\d+.*$", "", italic_text).strip()
             case_name = _fs_safe(cn, 50)
         else:
             case_name = _fs_safe(italic_text[:45] or plain[:45], 50)
-        # Reporter: preserve abbreviation dots (F.3d, U.S., S. Ct., etc.)
         rep_m = re.search(r"\b(\d+\s+\S+\.?\s*\d+)", plain)
         reporter = _fs_safe(rep_m.group(1)) if rep_m else ""
         return "_".join(p for p in [prefix, case_name, reporter] if p)
 
     # ── Statute (Rule 12) ─────────────────────────────────────────────────
-    # Preserve § symbol, U.S.C.A. dots, etc. — only strip the trailing year
     if "Rule 12" in classification:
-        # Keep only the main statute reference and strip subsection / commentary parentheticals.
         stat_m = re.search(r"(\d+\s+U\.S\.C\.?\s+§+\s*\d+)", plain)
         if stat_m:
             stat = stat_m.group(1)
@@ -923,43 +1025,32 @@ def _suggest_filename(fn_num, src_runs, classification, root_info=None, supra_re
         stat = _fs_safe(stat, 55)
         return f"{prefix}_{stat}" if stat else prefix
 
-    # ── Shared helper: extract author last name + italic title from runs ──
-    def _author_and_title():
-        author_buf = []
-        for text, props in src_runs:
-            if props.get("italic"):
-                break
-            author_buf.append(text)
-        author_raw = "".join(author_buf).strip().rstrip(",").strip()
-        # Strip any leading citation signal (e.g. "E.g.,", "See generally,")
-        author_raw = _SIGNAL_PREFIX_RE.sub("", author_raw).strip().rstrip(",").strip()
-        # Use last word as last name (natural order: "Oliver Kunzler" → "Kunzler")
-        author_last = _author_section_from_plain(author_raw)
-        title_raw = italic_text.split(",")[0] if italic_text else ""
-        title     = _fs_safe(title_raw, 50)
-        return author_last, title
+    # ── Journal article (Rule 16) ─────────────────────────────────────────
+    # Format: FN#_Author, Title, vol/journal/year
+    if "Rule 16" in classification:
+        clean_citation = _strip_commentary(
+            _SIGNAL_PREFIX_RE.sub("", plain).strip()
+        )
+        return f"{prefix}_{_fs_safe(clean_citation, 120)}"
 
-    # ── Journal article (Rule 16) or Book (Rule 15) ───────────────────────
-    if "Rule 16" in classification or "Rule 15" in classification:
-        author_last, title = _author_and_title()
+    # ── Book (Rule 15) ────────────────────────────────────────────────────
+    if "Rule 15" in classification:
+        author_raw, title_raw, _ = _extract_author_and_title(src_runs)
+        author_last = _author_section_from_plain(author_raw)
+        title = _fs_safe(title_raw.split(",")[0], 50)
         return "_".join(p for p in [prefix, author_last, title] if p)
 
     # ── Internet / URL (Rule 18) ──────────────────────────────────────────
-    # Many online articles have a clear author + italic title — detect that
-    # structure and treat them identically to journal articles.
     if "Rule 18" in classification:
-        #First, try article-like internet citations where the title precedes the author.
         author_section, title = _internet_author_and_title(plain)
         if author_section or title:
             return "_".join(p for p in [prefix, author_section, title] if p)
-
-        # Next, handle sources that still expose a conventional author + italic title structure.
         has_non_italic = any(t.strip() and not p.get("italic") for t, p in src_runs)
         if has_non_italic and italic_text:
-            author_last, title = _author_and_title()
+            author_raw, title_raw, _ = _extract_author_and_title(src_runs)
+            author_last = _author_section_from_plain(author_raw)
+            title = _fs_safe(title_raw.split(",")[0], 50)
             return "_".join(p for p in [prefix, author_last, title] if p)
-
-        # Bare URL or no clear structure.
         title_text = re.sub(r"https?://\S+", "", plain).strip()
         title_text = re.sub(r"\(last visited[^)]*\)", "", title_text, flags=re.IGNORECASE).strip().rstrip(",")
         title_text = re.sub(r"^(?:See|Cf|But\s+see|Accord)[,.]?\s+",
