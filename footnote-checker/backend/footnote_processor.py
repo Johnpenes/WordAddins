@@ -48,7 +48,9 @@ _SIGNAL_PREFIX_RE = re.compile(
     r"See\s+generally"
     r"|See\s+also"
     r"|See\s+e\.g\."
+    r"|See\s+e\.g\b"      # "See e.g," without dot
     r"|E\.g\."
+    r"|e\.g\b"            # standalone "e.g," without leading See
     r"|See"
     r"|But\s+see"
     r"|Cf\."
@@ -59,6 +61,15 @@ _SIGNAL_PREFIX_RE = re.compile(
     r"[,.]?\s*",
     re.IGNORECASE,
 )
+
+
+def _strip_signal_prefix(text):
+    """Strip all leading citation signal tokens (handles chains like 'See, e.g.,')."""
+    prev = None
+    while prev != text:
+        prev = text
+        text = _SIGNAL_PREFIX_RE.sub("", text).lstrip(",. ")
+    return text.strip()
 
 _COMMENTARY_STARTERS = frozenset({
     # Articles / determiners
@@ -343,9 +354,11 @@ def _classify_source(runs):
     if re.search(r"https?://", plain, re.IGNORECASE):
         return "Rule 18 (Internet Sources); Rule 18.2 (Direct Internet Citations)"
 
-    # 9. Journal / law review article: volume + abbreviated journal name + page
-    if (re.search(r"\b\d+\s+[A-Z][a-z]{0,4}\.\s*(?:Rev|J|L)\b", plain)
-            or re.search(r"\bL\.\s*(?:Rev|J)\.", plain)):
+    # 9. Journal / law review article: volume + abbreviated journal name + page.
+    # Matches both dotted (L. Rev.) and dot-free (L Rev, UMKC L Rev) forms.
+    if (re.search(r"\b\d+\s+[A-Z][a-z]{0,4}\.?\s*(?:Rev|J|L)\b", plain)
+            or re.search(r"\bL\.?\s*(?:Rev|J)\.?\b", plain)
+            or re.search(r"\b\d+\s+[A-Z]{2,}\s+L\.?\s*Rev\.?\b", plain)):
         # Check for student note/comment signals
         student = re.search(r"\bNote\b|\bComment\b|\bRecent\s+Case\b", plain)
         r2 = "Rule 16.4 (Student-Written Materials)" if student else "Rule 16.3 (Author & Title)"
@@ -780,82 +793,7 @@ def _build_id_root_map(runs_map):
     return result
 
 
-def _fs_safe(s, maxlen=55):
-    """Return a filesystem-safe version of s, truncated to maxlen."""
-    s = re.sub(r'[<>:"/\\|?*\x00-\x1f]', "", s)
-    s = re.sub(r"\s+", " ", s).strip().rstrip(".")
-    return s[:maxlen]
 
-
-def _label_from_plain(plain_text):
-    """
-    Extract an author_last + title (or case + reporter) label from plain-text
-    citation.  Used when we only have plain text for the root source (Id./supra
-    resolution) and can't rely on italic run metadata.
-    """
-    plain = _SIGNAL_PREFIX_RE.sub("", plain_text.strip()).strip()
-
-    # Case: has "v. CapitalLetter" pattern
-    if re.search(r"\bv\.\s+[A-Z]", plain):
-        case_m = re.match(r"([^\d]+?)(?=,?\s*\d)", plain)
-        case_part = _fs_safe(case_m.group(1).strip() if case_m else plain[:50], 50)
-        rep_m = re.search(r"\b(\d+\s+\S+\.?\s*\d+)", plain)
-        reporter  = _fs_safe(rep_m.group(1)) if rep_m else ""
-        return "_".join(p for p in [case_part, reporter] if p)
-
-    # Statute
-    if re.search(r"[§¶]|\bU\.S\.C", plain):
-        stat = re.sub(r"\(\d{4}\).*$", "", plain).strip()
-        return _fs_safe(stat, 55)
-
-    # General: try "Author, Title, Source" split
-    parts = plain.split(",", 2)
-    if len(parts) >= 2 and 1 <= len(parts[0].split()) <= 3:
-        name_words = parts[0].strip().split()
-        author_last = _fs_safe(name_words[-1], 20) if name_words else ""
-        rest = ",".join(parts[1:]).strip()
-        rest = re.sub(r"\s*\(\d{4}\).*$", "", rest)
-        title = _fs_safe(rest[:50])
-        return f"{author_last}_{title}" if title else author_last
-
-    return _fs_safe(plain[:60])
-
-def _author_section_from_plain(author_raw):
-    """Return `Last` or `Last1 & Last2` from a plain-text author block."""
-    author_raw = _SIGNAL_PREFIX_RE.sub("", author_raw.strip()).strip().rstrip(",")
-    if not author_raw:
-        return ""
-
-    norm = re.sub(r"\s+(?:and|&)\s+", " & ", author_raw, flags=re.IGNORECASE)
-    parts = [p.strip() for p in norm.split(" & ") if p.strip()]
-
-    last_names = []
-    for part in parts:
-        cleaned = re.sub(r"\s+", " ", part.strip().strip(","))
-        if not cleaned:
-            continue
-        words = cleaned.split()
-        last_names.append(_fs_safe(words[-1], 20))
-
-    return " & ".join(last_names)
-
-def _internet_author_and_title(plain):
-    """
-    Best-effort parser for internet/article-like citations of the form:
-      Title, AUTHOR NAME (n.d./year), URL ...
-    Returns (author_section, title).
-    """
-    before_url = re.split(r"https?://", plain, maxsplit=1, flags=re.IGNORECASE)[0].strip().rstrip(",")
-    m = re.match(
-        r"^(?P<title>.+?),\s*(?P<author>[^,]+?)\s*\((?:n\.d\.|\d{4})\)\s*$",
-        before_url,
-        re.IGNORECASE,
-    )
-    if m:
-        title = _fs_safe(m.group("title").strip(), 80)
-        author_section = _author_section_from_plain(m.group("author"))
-        return author_section, title
-    return "", ""
 
 def _strip_commentary(text):
     """
@@ -867,56 +805,14 @@ def _strip_commentary(text):
 
     If no year paren is found the text is returned as-is (trimmed).
     """
-    # Strip pincite: ", <digits>" immediately before the year paren
-    text = re.sub(r',\s*\d+\s*(?=\(\d{4}\))', '', text)
+    # Strip pincite: ", <digits>" immediately before the year paren,
+    # but preserve the space before the paren itself.
+    text = re.sub(r',\s*\d+(?=\s*\(\d{4}\))', '', text)
     m = re.search(r'\(\d{4}\)', text)
     if m:
         return text[:m.end()].rstrip(".,; ")
     return text.strip()
 
-
-def _extract_author_and_title(runs):
-    """
-    Shared extraction kernel used by both _extract_display_name and
-    _suggest_filename.
-
-    Walks the run list once and returns:
-      author_raw  – full author string, signal-prefix stripped, trailing
-                    punctuation cleaned.  Suitable for display (pass through
-                    _author_section_from_plain to get last-name-only for filenames).
-      title_raw   – full italic title string (everything in italics).
-                    For books this is the entire title; for articles the italic
-                    span typically contains only the article title.
-      post_italic – non-italic text that appears after the italic title block.
-                    For Rule 16 articles this carries the vol / journal / year.
-
-    None of the three strings are truncated or sanitised here; callers apply
-    _fs_safe / truncation as needed.
-    """
-    # ── Author: contiguous non-italic runs before the first italic run ────
-    author_buf = []
-    for text, props in runs:
-        if props.get("italic"):
-            break
-        author_buf.append(text)
-    author_raw = _SIGNAL_PREFIX_RE.sub(
-        "", "".join(author_buf).strip().rstrip(",").strip()
-    ).strip().rstrip(",").strip()
-
-    # ── Title: all italic text ────────────────────────────────────────────
-    title_raw = "".join(t for t, p in runs if p.get("italic")).strip()
-
-    # ── Post-italic suffix (vol / journal / year for Rule 16) ────────────
-    past_italic = False
-    suffix_buf = []
-    for text, props in runs:
-        if props.get("italic"):
-            past_italic = True
-        elif past_italic:
-            suffix_buf.append(text)
-    post_italic = "".join(suffix_buf).strip().lstrip(",").strip()
-
-    return author_raw, title_raw, post_italic
 
 
 def _extract_display_name(runs, classification):
@@ -934,9 +830,10 @@ def _extract_display_name(runs, classification):
     """
     cls_str = classification if isinstance(classification, str) else " ".join(classification)
 
+    # Use startswith so NOTE strings that mention Rule 10/12/etc. are not blocked.
     NO_LINK = ("Rule 4.1", "Rule 4.2", "Rule 10", "Rule 11",
                "Rule 12", "Rule 12.9", "Rule 14")
-    if any(r in cls_str for r in NO_LINK):
+    if any(cls_str.startswith(r) for r in NO_LINK):
         return None
 
     plain = "".join(t for t, _ in runs).strip()
@@ -946,126 +843,33 @@ def _extract_display_name(runs, classification):
     if url_m:
         return url_m.group(0).rstrip(".,;)")
 
-    # No URL — only produce a Google search link for books and articles.
-    if not any(r in cls_str for r in ("Rule 15", "Rule 16")):
-        return None
+    # ── Definitively classified books / articles ─────────────────────────
+    if cls_str.startswith("Rule 15") or cls_str.startswith("Rule 16"):
+        return _strip_commentary(_strip_signal_prefix(plain)) or None
 
-    author_raw, title_raw, _ = _extract_author_and_title(runs)
-
-    # ── Book (Rule 15): full author name + full italic title ──────────────
-    if "Rule 15" in cls_str:
-        parts = [p for p in [author_raw, title_raw] if p]
-        return " ".join(parts) or None
-
-    # ── Journal article (Rule 16): strip signal prefix and trailing commentary,
-    #    return the clean citation string as-is (author, title, vol/journal/year)
-    if "Rule 16" in cls_str:
-        clean = _SIGNAL_PREFIX_RE.sub("", plain).strip()
-        return _strip_commentary(clean) or None
+    # ── NOTE / ambiguous: generate a link only when the text looks like an
+    #    authored work (person name before first comma, no "v." case pattern).
+    if cls_str.startswith("NOTE") and any(r in cls_str for r in ("Rule 15", "Rule 16")):
+        stripped = _strip_signal_prefix(plain)
+        first_comma = stripped.find(",")
+        if first_comma != -1:
+            author_candidate = stripped[:first_comma].strip()
+            words = author_candidate.split()
+            has_et_al = (len(words) >= 2 and words[-2].lower() == "et"
+                         and words[-1].rstrip(".").lower() == "al")
+            core_words = words[:-2] if has_et_al else words
+            is_person = (
+                1 <= len(core_words) <= 4
+                and all(w[0].isupper() for w in core_words if w)
+                and not any(c.isdigit() for c in author_candidate)
+                and not re.search(r"\bv\.\s", author_candidate)
+                and not (len(core_words) == 1 and core_words[0] == core_words[0].upper())
+            )
+            if is_person:
+                return _strip_commentary(stripped) or None
 
     return None
 
-
-def _suggest_filename(fn_num, src_runs, classification, root_info=None, supra_ref_label=None):
-    """
-    Suggest a file-label string for a source entry.
-
-    Format varies by citation type:
-      Articles / Books  →  FN#_AuthorLastName_Title
-      Cases             →  FN#_CaseName_Reporter   (punctuation preserved)
-      Statutes          →  FN#_StatuteRef           (§, dots, etc. preserved)
-      Internet          →  FN#_AuthorLastName_Title (if article-like)
-                           FN#_PageTitle            (if bare URL/page)
-      Id. / supra       →  FN{root_fn}-{fn_num}_RootAuthor_RootTitle
-                           (chains resolve back to the ultimate root footnote)
-    """
-    plain       = "".join(t for t, _ in src_runs).strip()
-    italic_text = "".join(t for t, p in src_runs if p.get("italic")).strip()
-    prefix      = f"FN{fn_num}"
-
-    # ── Id. ───────────────────────────────────────────────────────────────
-    if re.match(r"^Id\b", plain, re.IGNORECASE):
-        if root_info:
-            root_fn, root_text = root_info
-            return f"FN{root_fn}-{fn_num}_{_label_from_plain(root_text)}"
-        return f"{prefix}_Id"
-
-    # ── supra ─────────────────────────────────────────────────────────────
-    if re.search(r"\bsupra\b", plain, re.IGNORECASE):
-        note_m = re.search(r"\bsupra\s+note\s+(\d+)\b", plain, re.IGNORECASE)
-        ref_fn = note_m.group(1) if note_m else None
-        if supra_ref_label and ref_fn:
-            rest = re.sub(rf"^FN{ref_fn}_?", "", supra_ref_label)
-            return f"FN{ref_fn}-{fn_num}_{rest}" if rest else f"FN{ref_fn}-{fn_num}_supra"
-        if root_info:
-            root_fn, root_text = root_info
-            return f"FN{root_fn}-{fn_num}_{_label_from_plain(root_text)}"
-        if ref_fn:
-            return f"FN{ref_fn}-{fn_num}_supra"
-        return f"{prefix}_supra"
-
-    # ── Case (Rule 10) ────────────────────────────────────────────────────
-    if "Rule 10" in classification:
-        if re.search(r"\bv\.\s", italic_text):
-            cn = re.sub(r",\s*\d+.*$", "", italic_text).strip()
-            case_name = _fs_safe(cn, 50)
-        else:
-            case_name = _fs_safe(italic_text[:45] or plain[:45], 50)
-        rep_m = re.search(r"\b(\d+\s+\S+\.?\s*\d+)", plain)
-        reporter = _fs_safe(rep_m.group(1)) if rep_m else ""
-        return "_".join(p for p in [prefix, case_name, reporter] if p)
-
-    # ── Statute (Rule 12) ─────────────────────────────────────────────────
-    if "Rule 12" in classification:
-        stat_m = re.search(r"(\d+\s+U\.S\.C\.?\s+§+\s*\d+)", plain)
-        if stat_m:
-            stat = stat_m.group(1)
-        else:
-            stat = re.sub(r"\s*\([^)]*\)", "", plain).strip()
-        stat = _fs_safe(stat, 55)
-        return f"{prefix}_{stat}" if stat else prefix
-
-    # ── Journal article (Rule 16) ─────────────────────────────────────────
-    # Format: FN#_Author, Title, vol/journal/year
-    if "Rule 16" in classification:
-        clean_citation = _strip_commentary(
-            _SIGNAL_PREFIX_RE.sub("", plain).strip()
-        )
-        return f"{prefix}_{_fs_safe(clean_citation, 120)}"
-
-    # ── Book (Rule 15) ────────────────────────────────────────────────────
-    if "Rule 15" in classification:
-        author_raw, title_raw, _ = _extract_author_and_title(src_runs)
-        author_last = _author_section_from_plain(author_raw)
-        title = _fs_safe(title_raw.split(",")[0], 50)
-        return "_".join(p for p in [prefix, author_last, title] if p)
-
-    # ── Internet / URL (Rule 18) ──────────────────────────────────────────
-    if "Rule 18" in classification:
-        author_section, title = _internet_author_and_title(plain)
-        if author_section or title:
-            return "_".join(p for p in [prefix, author_section, title] if p)
-        has_non_italic = any(t.strip() and not p.get("italic") for t, p in src_runs)
-        if has_non_italic and italic_text:
-            author_raw, title_raw, _ = _extract_author_and_title(src_runs)
-            author_last = _author_section_from_plain(author_raw)
-            title = _fs_safe(title_raw.split(",")[0], 50)
-            return "_".join(p for p in [prefix, author_last, title] if p)
-        title_text = re.sub(r"https?://\S+", "", plain).strip()
-        title_text = re.sub(r"\(last visited[^)]*\)", "", title_text, flags=re.IGNORECASE).strip().rstrip(",")
-        title_text = re.sub(r"^(?:See|Cf|But\s+see|Accord)[,.]?\s+",
-                            "", title_text, flags=re.IGNORECASE)
-        title = _fs_safe(title_text, 80) or "Online Source"
-        return f"{prefix}_{title}"
-
-    # ── Administrative / regulatory (Rule 14) ────────────────────────────
-    if "Rule 14" in classification:
-        title = _fs_safe(italic_text or plain[:55], 55)
-        return f"{prefix}_{title}" if title else prefix
-
-    # ── Fallback ──────────────────────────────────────────────────────────
-    title = _fs_safe(italic_text or plain[:55], 55)
-    return f"{prefix}_{title}" if title else prefix
 
 
 # ── Excel generation ───────────────────────────────────────────────────────────
@@ -1241,29 +1045,7 @@ def _build_rows(docx_path, start_fn, end_fn):
     body_contexts = extract_body_contexts(docx_path, start_fn, end_fn)
     id_root_map   = _build_id_root_map(all_fn_runs)
 
-    # ── Pass 1: pre-compute canonical labels for supra note-N resolution ─────
-    # For each footnote in buffer+range, compute the label of its first source
-    # (without supra_ref_label, to avoid circular lookups).
-    canonical_labels = {}
-    for fn_num in range(buffer_start, end_fn + 1):
-        runs = all_fn_runs.get(fn_num)
-        if not runs:
-            continue
-        plain    = "".join(t for t, _ in runs)
-        sources  = split_sources(plain)
-        fn_roots = id_root_map.get(fn_num, [])
-        if sources:
-            src_runs_list = assign_source_runs(runs, sources)
-            src_r     = src_runs_list[0]
-            root_info = fn_roots[0] if fn_roots else None
-            bb        = _classify_source(src_r)
-            canonical_labels[fn_num] = _suggest_filename(
-                fn_num, src_r, bb, root_info=root_info
-            )
-        else:
-            canonical_labels[fn_num] = ""
-
-    # ── Pass 2: build raw rows for the requested range ───────────────────────
+    # ── Build rows for the requested range ──────────────────────────────────
     # 7-element tuples (label_span not yet set).
     raw_rows         = []
     source_count     = 0
@@ -1285,23 +1067,7 @@ def _build_rows(docx_path, start_fn, end_fn):
                 root_info = fn_roots[src_idx] if src_idx < len(fn_roots) else None
                 bb        = _classify_source(src_runs)
 
-                # Supra resolution: look up the canonical label of the
-                # referenced footnote so we can format "FN{ref}-{fn}_..." .
-                src_plain       = "".join(t for t, _ in src_runs)
-                supra_ref_label = None
-                if re.search(r"\bsupra\b", src_plain, re.IGNORECASE):
-                    note_m = re.search(
-                        r"\bsupra\s+note\s+(\d+)\b", src_plain, re.IGNORECASE
-                    )
-                    if note_m:
-                        ref_fn          = int(note_m.group(1))
-                        supra_ref_label = canonical_labels.get(ref_fn, "")
-
-                file_label = _suggest_filename(
-                    fn_num, src_runs, bb,
-                    root_info=root_info,
-                    supra_ref_label=supra_ref_label,
-                )
+                file_label = ""
 
                 id_root_str = ""
                 if root_info:

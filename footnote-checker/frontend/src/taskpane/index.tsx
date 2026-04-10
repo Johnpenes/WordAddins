@@ -1,14 +1,16 @@
 import * as React from "react";
 import { createRoot } from "react-dom/client";
 
-// We now rely on Word selection rather than persistent font highlight.
-
 const App = () => {
   const [status, setStatus] = React.useState("Idle");
   const [data, setData] = React.useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
+  // fileLabelEdits: "fnIndex-srcIndex" -> current edited value
+  const [fileLabelEdits, setFileLabelEdits] = React.useState<Record<string, string>>({});
+  // confirmed: "fnIndex-srcIndex" -> true after successful bank push
+  const [confirmed, setConfirmed] = React.useState<Record<string, boolean>>({});
 
   // Maps display index (0-based) → raw index in body.footnotes.items.
   // Needed because some documents have non-auto-numbered footnotes (e.g. author
@@ -276,8 +278,21 @@ const App = () => {
     Array.isArray(src?.rules) &&
     src.rules.some((r: string) => r.includes("Rule 4.1") || r.includes("Rule 4.2"));
 
-  const renderFileLabel = (src: any) => {
-    if (!src?.fileLabel) return null;
+  const confirmFileLabel = async (key: string, filename: string) => {
+    if (!filename.trim()) return;
+    try {
+      await fetch("https://localhost:3000/api/add-to-bank", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filename: filename.trim() }),
+      });
+      setConfirmed((prev) => ({ ...prev, [key]: true }));
+    } catch (err) {
+      console.error("Failed to add to bank", err);
+    }
+  };
+
+  const renderFileLabel = (src: any, key: string) => {
     if (isBackReference(src)) {
       return (
         <div style={{ marginTop: 8, fontSize: 12, color: "#888" }}>
@@ -285,9 +300,32 @@ const App = () => {
         </div>
       );
     }
+
+    const editedValue = fileLabelEdits[key] ?? src?.fileLabel ?? "";
+    const isConfirmed = confirmed[key] === true;
+
     return (
       <div style={{ marginTop: 8, fontSize: 12 }}>
-        <strong>Suggested File Name:</strong> {String(src.fileLabel)}
+        <strong>Suggested File Name:</strong>
+        <div style={{ marginTop: 4 }}>
+          <textarea
+            value={editedValue}
+            placeholder="No match — enter filename"
+            onChange={(e) => {
+              setFileLabelEdits((prev) => ({ ...prev, [key]: e.target.value }));
+              setConfirmed((prev) => ({ ...prev, [key]: false }));
+            }}
+            rows={3}
+            style={{ width: "100%", fontSize: 11, padding: "4px 6px", boxSizing: "border-box", resize: "vertical", fontFamily: "Arial" }}
+          />
+          <button
+            onClick={() => void confirmFileLabel(key, editedValue)}
+            disabled={isConfirmed || !editedValue.trim()}
+            style={{ marginTop: 4, fontSize: 11, padding: "3px 10px", whiteSpace: "nowrap" }}
+          >
+            {isConfirmed ? "✓ Saved" : "Confirm"}
+          </button>
+        </div>
       </div>
     );
   };
@@ -401,7 +439,7 @@ const App = () => {
                   </div>
                 )}
 
-                {renderFileLabel(src)}
+                {renderFileLabel(src, `${currentIndex}-${idx}`)}
 
                 {renderSearchLink(src)}
               </div>
@@ -426,7 +464,7 @@ const App = () => {
                 </div>
               )}
 
-              {renderFileLabel(current.sources[0])}
+              {renderFileLabel(current.sources[0], `${currentIndex}-0`)}
 
               {renderSearchLink(current.sources[0])}
             </div>

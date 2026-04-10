@@ -6,7 +6,8 @@ import tempfile
 import shutil
 import re
 
-from footnote_processor import _build_rows, split_sources, assign_source_runs, _classify_source, _suggest_filename, _extract_display_name, _get_body_sentence
+from footnote_processor import _build_rows, split_sources, assign_source_runs, _classify_source, _extract_display_name, _get_body_sentence
+from bank_matcher import match_filename, add_to_bank, is_back_reference, _citation_tokens, _score
 from lxml import etree
 
 
@@ -24,15 +25,12 @@ app.add_middleware(
 
 @app.post("/process")
 async def process_docx(file: UploadFile = File(...)):
-    # Save uploaded file temporarily
     with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as tmp:
         shutil.copyfileobj(file.file, tmp)
         temp_path = tmp.name
 
-    # Run your existing logic
     rows, _, _, _ = _build_rows(temp_path, 1, 200)
 
-    # Convert rows -> structured JSON
     footnotes = {}
     for fn, body, src_runs, bb, _, label, _, _ in rows:
         fn_num = int(fn)
@@ -60,8 +58,6 @@ async def process_docx(file: UploadFile = File(...)):
 @app.post("/process-text")
 async def process_text(data: dict):
     text = data.get("text", "")
-
-    # TEMP: basic response for Word integration
     return {
         "footnotes": [
             {
@@ -127,8 +123,7 @@ def _extract_xml_roots_from_package_ooxml(package_ooxml: str):
     pkg_ns = {"pkg": "http://schemas.microsoft.com/office/2006/xmlPackage"}
 
     def _part_root(part_name: str):
-        node = pkg_root.find(f".//pkg:part[@pkg:name='{part_name}']/pkg:xmlData/*", namespaces=pkg_ns)
-        return node
+        return pkg_root.find(f".//pkg:part[@pkg:name='{part_name}']/pkg:xmlData/*", namespaces=pkg_ns)
 
     doc_root = _part_root("/word/document.xml")
     fn_root = _part_root("/word/footnotes.xml")
@@ -136,18 +131,18 @@ def _extract_xml_roots_from_package_ooxml(package_ooxml: str):
 
 
 def _extract_body_contexts_from_package_ooxml(package_ooxml: str) -> dict:
-    """Mirror extract_body_contexts(...) using packaged OOXML from Word.getOoxml()."""
+    """Extract precise body sentence for each footnote from the full document OOXML."""
     contexts = {}
     doc_root, fn_root = _extract_xml_roots_from_package_ooxml(package_ooxml)
     if doc_root is None or fn_root is None:
         return contexts
 
     ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
-    w_ns = ns["w"]
+    W_ns = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 
     auto_ids = set()
     for fn_el in fn_root.findall("w:footnote", ns):
-        raw_id = fn_el.get(f"{{{w_ns}}}id")
+        raw_id = fn_el.get(f"{{{W_ns}}}id")
         if raw_id and fn_el.findall(".//w:footnoteRef", ns):
             try:
                 auto_ids.add(int(raw_id))
@@ -157,7 +152,7 @@ def _extract_body_contexts_from_package_ooxml(package_ooxml: str) -> dict:
     display_num = 0
     xml_to_display = {}
     for ref in doc_root.findall(".//w:footnoteReference", ns):
-        raw_id = ref.get(f"{{{w_ns}}}id")
+        raw_id = ref.get(f"{{{W_ns}}}id")
         if not raw_id:
             continue
         try:
@@ -170,7 +165,7 @@ def _extract_body_contexts_from_package_ooxml(package_ooxml: str) -> dict:
 
     for para in doc_root.findall(".//w:p", ns):
         for ref in para.findall(".//w:footnoteReference", ns):
-            raw_id = ref.get(f"{{{w_ns}}}id")
+            raw_id = ref.get(f"{{{W_ns}}}id")
             if raw_id is None:
                 continue
             try:
@@ -222,12 +217,15 @@ def _process_single_footnote(fn: dict, body_contexts: dict) -> dict:
         classification = _classify_source(part_runs) if part_runs else []
         if isinstance(classification, str):
             rules = [classification]
+            cls_str = classification
         elif isinstance(classification, list):
             rules = classification
+            cls_str = " ".join(classification)
         else:
             rules = []
+            cls_str = ""
 
-        file_label = _suggest_filename(number, part_runs, classification) if part_runs else ""
+        file_label = match_filename(part, number, cls_str) if part else ""
         display_name = _extract_display_name(part_runs, classification) if part_runs else None
 
         sources.append(
@@ -260,7 +258,7 @@ def _process_single_footnote(fn: dict, body_contexts: dict) -> dict:
                     "runs": runs_json,
                     "rules": ([classification] if isinstance(classification, str) else classification) if classification else [],
                     "warnings": [],
-                    "fileLabel": _suggest_filename(number, src_runs, classification) or "",
+                    "fileLabel": match_filename(raw_text.strip(), number, classification if isinstance(classification, str) else " ".join(classification or [])) or "",
                     "displayName": _extract_display_name(src_runs, classification),
                 }
             ]
@@ -287,6 +285,75 @@ def _process_single_footnote(fn: dict, body_contexts: dict) -> dict:
 _executor = ThreadPoolExecutor()
 
 
+def _resolve_root_footnotes(footnotes: list[dict]) -> list[dict]:
+    """
+    Second pass: for each source that is a back-reference (fileLabel is empty
+    and text looks like Id./supra/short cite), find the most likely root
+    footnote by scanning backward and token-matching against earlier sources.
+
+    Adds a `rootFn` field (int) to each back-reference source when a root
+    is found, so the frontend can display "Go to Footnote N" navigation.
+    """
+    # Build index: fn_number -> list of (source_text, classification)
+    # Only non-back-reference sources are candidates for being roots.
+    root_candidates: dict[int, list[str]] = {}
+    for fn in footnotes:
+        num = fn.get("number")
+        try:
+            num = int(num)
+        except Exception:
+            continue
+        for src in fn.get("sources", []):
+            cls_str = " ".join(src.get("rules", []))
+            text = src.get("text", "")
+            if not is_back_reference(text, cls_str) and text.strip():
+                root_candidates.setdefault(num, []).append(text)
+
+    for fn in footnotes:
+        num = fn.get("number")
+        try:
+            num = int(num)
+        except Exception:
+            continue
+        for src in fn.get("sources", []):
+            cls_str = " ".join(src.get("rules", []))
+            text = src.get("text", "")
+            if not is_back_reference(text, cls_str):
+                continue
+
+            # Supra note N — footnote number is explicit in the text
+            supra_m = re.search(r"\bsupra\s+note\s+(\d+)\b", text, re.IGNORECASE)
+            if supra_m:
+                ref = int(supra_m.group(1))
+                if ref in root_candidates:
+                    src["rootFn"] = ref
+                continue
+
+            # Pure Id. — root is just the previous non-back-reference footnote
+            c_tokens = _citation_tokens(text)
+            if not c_tokens:
+                for prev_num in range(num - 1, 0, -1):
+                    if prev_num in root_candidates:
+                        src["rootFn"] = prev_num
+                        break
+                continue
+
+            # Score backward through candidates for other short cites
+            best_score, best_fn = 0, None
+            for prev_num in range(num - 1, 0, -1):
+                for cand_text in root_candidates.get(prev_num, []):
+                    cand_tokens = _citation_tokens(cand_text)
+                    s = _score(c_tokens, cand_tokens)
+                    if s > best_score:
+                        best_score = s
+                        best_fn = prev_num
+
+            if best_fn is not None and best_score >= 1:
+                src["rootFn"] = best_fn
+
+    return footnotes
+
+
 @app.post("/process-footnotes")
 async def process_footnotes(data: dict):
     footnotes = data.get("footnotes", [])
@@ -299,5 +366,15 @@ async def process_footnotes(data: dict):
         for fn in footnotes
     ]
     normalized = list(await asyncio.gather(*tasks))
+    normalized = _resolve_root_footnotes(normalized)
 
     return {"footnotes": normalized}
+
+
+@app.post("/add-to-bank")
+async def add_to_bank_endpoint(data: dict):
+    filename = data.get("filename", "").strip()
+    if not filename:
+        return {"ok": False, "error": "filename required"}
+    add_to_bank(filename)
+    return {"ok": True}
