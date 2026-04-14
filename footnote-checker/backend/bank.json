@@ -6,20 +6,17 @@
       "grants",
       "pass",
       "oregon",
-      "johnson",
-      "603",
-      "520"
-    ]
+      "johnson"
+    ],
+    "type": "case"
   },
   {
     "filename": "Edwards v. California, 314 U.S. 160 (1941).pdf",
     "tokens": [
       "edwards",
-      "california",
-      "314",
-      "160",
-      "1941"
-    ]
+      "california"
+    ],
+    "type": "case"
   },
   {
     "filename": "United States v Skrmetti, 145 S.Ct. 1816.pdf",
@@ -27,20 +24,18 @@
       "united",
       "states",
       "skrmetti",
-      "145",
-      "s.ct",
-      "1816"
-    ]
+      "s.ct"
+    ],
+    "type": "case"
   },
   {
     "filename": "Lindsley v Natural Carbonic Gas Co, 220 U.S. 61.pdf",
     "tokens": [
       "lindsley",
       "natural",
-      "carbonic",
-      "220",
-      "61"
-    ]
+      "carbonic"
+    ],
+    "type": "case"
   },
   {
     "filename": "Nice-Whither the Canaries on the Exclusion of Poor People From Equal Constituional Protection.pdf",
@@ -55,7 +50,8 @@
       "equal",
       "constituional",
       "protection"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Amicus Brief of the National Law Center on Homelessness & Poverty in Support of Plaintiff\u2019s Motion for Summary Judgment, 2020 WL 5651849.pdf",
@@ -70,10 +66,9 @@
       "plaintiff\u2019s",
       "motion",
       "summary",
-      "judgment",
-      "2020",
-      "5651849"
-    ]
+      "judgment"
+    ],
+    "type": "case_doc"
   },
   {
     "filename": "Blake v. City of Grants Pass, 2020 WL 4209227.pdf",
@@ -81,22 +76,21 @@
       "blake",
       "city",
       "grants",
-      "pass",
-      "2020",
-      "4209227"
-    ]
+      "pass"
+    ],
+    "type": "case"
   },
   {
     "filename": "HUD - 2024 Annual Homelessness Assessment Report (AHAR) to Congress.pdf",
     "tokens": [
-      "2024",
       "annual",
       "homelessness",
       "assessment",
       "report",
       "ahar",
       "congress"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Johnson v City of Grants Pass, 50 F.4th 787 (9th Cir. 2022).pdf",
@@ -105,11 +99,9 @@
       "city",
       "grants",
       "pass",
-      "50",
-      "f.4th",
-      "787",
-      "2022"
-    ]
+      "f.4th"
+    ],
+    "type": "case"
   },
   {
     "filename": "Blake v. City of Grants Pass - Third Amended Class Action Complaint.pdf",
@@ -123,7 +115,8 @@
       "class",
       "action",
       "complaint"
-    ]
+    ],
+    "type": "case"
   },
   {
     "filename": "Oregon Revised Statute Section 195.530.pdf",
@@ -133,7 +126,8 @@
       "statute",
       "section",
       "195.530"
-    ]
+    ],
+    "type": "statute"
   },
   {
     "filename": "Grant Pass City Code_5.61.030(A).pdf",
@@ -143,7 +137,8 @@
       "city",
       "code",
       "5.61.030(a"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Disability Rights Oregon v. City of Grants Pass-Amended Complaint for Declaratory and Injunctive Relief, No. 25CV05989.pdf",
@@ -158,9 +153,9 @@
       "complaint",
       "declaratory",
       "injunctive",
-      "relief",
-      "25cv05989"
-    ]
+      "relief"
+    ],
+    "type": "case_doc"
   },
   {
     "filename": "Vaughan-New Grants Pass City Council drastically changes city_s approach to homelessness.pdf",
@@ -175,18 +170,19 @@
       "city",
       "approach",
       "homelessness"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "January 2025 highlights City of Grants Pass.pdf",
     "tokens": [
       "january",
-      "2025",
       "highlights",
       "city",
       "grants",
       "pass"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Vaughn-Grants Pass clears city-owned homeless campsite after decision by new leadership.pdf",
@@ -202,7 +198,8 @@
       "after",
       "decision",
       "leadership"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Disability Rights Oregon v. City of Grants Pass-Complaint for Declaratory and Injunctive Relief.pdf",
@@ -217,7 +214,8 @@
       "declaratory",
       "injunctive",
       "relief"
-    ]
+    ],
+    "type": "case_doc"
   },
   {
     "filename": "Tim Quitadamo-Temporary restraining order allowing public camping extended in Grants Pass.pdf",
@@ -232,13 +230,12 @@
       "extended",
       "grants",
       "pass"
-    ]
+    ],
+    "type": "case_doc"
   },
   {
     "filename": "Kobi5 NBC52-Grants Pass adopts new homeless resting locations, amid restraining order.pdf",
     "tokens": [
-      "kobi5",
-      "nbc52",
       "grants",
       "pass",
       "adopts",
@@ -248,7 +245,8 @@
       "amid",
       "restraining",
       "order"
-    ]
+    ],
+    "type": "case_doc"
   },
   {
     "filename": "Disability Rights Oregon v. City of Grants Pass-Order Granting Stipulated Motion to Modify Preliminary Injunction.pdf",
@@ -266,7 +264,8 @@
       "modify",
       "preliminary",
       "injunction"
-    ]
+    ],
+    "type": "case_doc"
   },
   {
     "filename": "Disability Rights Oregon v. City of Grants Pass-Stipulated Motion to Modify Preliminary Injunction.pdf",
@@ -282,7 +281,8 @@
       "modify",
       "preliminary",
       "injunction"
-    ]
+    ],
+    "type": "case"
   },
   {
     "filename": "Elizabeth Castillo and Allison Frost-Grants Pass grapples with how to balance needs of community, both housed and unhoused.pdf",
@@ -301,7 +301,8 @@
       "both",
       "housed",
       "unhoused"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Pettersson-California city to revoke ban on homeless housing in settlement with state.pdf",
@@ -315,7 +316,8 @@
       "settlement",
       "with",
       "state"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Foote_Vagrancy-Type Law and Its Administration.pdf",
@@ -324,7 +326,8 @@
       "vagrancy",
       "type",
       "administration"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Lacey_Vagrancy and other crimes of Personal condition.pdf",
@@ -335,7 +338,8 @@
       "crimes",
       "personal",
       "condition"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Quigley-Five Hundred Years of English Poor Laws, 1349-1834_ Regulating the Working and Nonworking Poor.pdf",
@@ -347,13 +351,12 @@
       "english",
       "poor",
       "laws",
-      "1349",
-      "1834",
       "regulating",
       "working",
       "nonworking",
       "poor"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Simon_Towns Without Pity_ A Constitutional and Historical Analysis of Official Efforts to Drive Homeless Persons from American Cities.pdf",
@@ -373,7 +376,8 @@
       "from",
       "american",
       "cities"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Quigley-Work or Starve_ Regulation of the Poor in Colonial America.pdf",
@@ -385,7 +389,8 @@
       "poor",
       "colonial",
       "america"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Waldron-Homelessness and the Issue of Freedom.pdf",
@@ -394,7 +399,8 @@
       "homelessness",
       "issue",
       "freedom"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Goluboff-Vagrant Nation Police Power Constitutional Change and the Making of the 1960s.pdf",
@@ -406,29 +412,27 @@
       "power",
       "constitutional",
       "change",
-      "making",
-      "1960s"
-    ]
+      "making"
+    ],
+    "type": "article"
   },
   {
     "filename": "Papachristou v City of Jacksonville, 405 U.S. 156 (1972)..pdf",
     "tokens": [
       "papachristou",
       "city",
-      "jacksonville",
-      "405",
-      "156",
-      "1972"
-    ]
+      "jacksonville"
+    ],
+    "type": "case"
   },
   {
     "filename": "Kolender v Lawson, 461 U.S. 352(1983)..pdf",
     "tokens": [
       "kolender",
       "lawson",
-      "461",
       "352(1983"
-    ]
+    ],
+    "type": "case"
   },
   {
     "filename": "Edwards v People of State of California, 314 U.S. 160 (1941)..pdf",
@@ -436,11 +440,9 @@
       "edwards",
       "people",
       "state",
-      "california",
-      "314",
-      "160",
-      "1941"
-    ]
+      "california"
+    ],
+    "type": "case"
   },
   {
     "filename": "Ellickson-Controlling Chronic Misconduct in City Spaces Of Panhandlers Skid Rows and Public Space Zoning.pdf",
@@ -457,7 +459,8 @@
       "public",
       "space",
       "zoning"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Rankin-Punishing Homelessness.pdf",
@@ -465,7 +468,8 @@
       "rankin",
       "punishing",
       "homelessness"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Rankin-Hiding Homelessness The Transcarceration of Homelessness.pdf",
@@ -475,7 +479,8 @@
       "homelessness",
       "transcarceration",
       "homelessness"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Rankin-Civilly Criminalizing Homelessness.pdf",
@@ -484,7 +489,8 @@
       "civilly",
       "criminalizing",
       "homelessness"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Nice-No Scrutiny Whatsoever.pdf",
@@ -492,25 +498,24 @@
       "nice",
       "scrutiny",
       "whatsoever"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Harris v McRae, 448 U.S. 323.pdf",
     "tokens": [
       "harris",
-      "mcrae",
-      "448",
-      "323"
-    ]
+      "mcrae"
+    ],
+    "type": "case"
   },
   {
     "filename": "James v Valtierra, 402 U.S. 137.pdf",
     "tokens": [
       "james",
-      "valtierra",
-      "402",
-      "137"
-    ]
+      "valtierra"
+    ],
+    "type": "case"
   },
   {
     "filename": "Nice - Making Conditions Constitutional by Attaching Them to Welfare.pdf",
@@ -522,7 +527,8 @@
       "attaching",
       "them",
       "welfare"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Civilly Criminalizing Homelessness, 56 Harv. C.R.-C.L. L. Rev. at 381-98..pdf",
@@ -530,11 +536,9 @@
       "civilly",
       "criminalizing",
       "homelessness",
-      "56",
-      "harv",
-      "381",
-      "98"
-    ]
+      "harv"
+    ],
+    "type": "unknown"
   },
   {
     "filename": "City of Grants Pass v. Johnson.pdf",
@@ -543,18 +547,17 @@
       "grants",
       "pass",
       "johnson"
-    ]
+    ],
+    "type": "case"
   },
   {
     "filename": "Harper v. Va. State Bd. Of Elections, 383 U.S. 663 (1966).pdf",
     "tokens": [
       "harper",
       "state",
-      "elections",
-      "383",
-      "663",
-      "1966"
-    ]
+      "elections"
+    ],
+    "type": "case"
   },
   {
     "filename": "McDonald v Board of Election Comrs of Chicago_394 U.S. 802 (1969).pdf",
@@ -563,28 +566,24 @@
       "board",
       "election",
       "comrs",
-      "chicago",
-      "394",
-      "802",
-      "1969"
-    ]
+      "chicago"
+    ],
+    "type": "case"
   },
   {
     "filename": "Griffin v. Illinois, 351 U.S. 12.pdf",
     "tokens": [
       "griffin",
-      "illinois",
-      "351",
-      "12"
-    ]
+      "illinois"
+    ],
+    "type": "case"
   },
   {
     "filename": "Heller v. Doe-509 U.S. 312.pdf",
     "tokens": [
-      "heller",
-      "509",
-      "312"
-    ]
+      "heller"
+    ],
+    "type": "case"
   },
   {
     "filename": "COHEN, SUPREME INEQUALITY_ THE SUPREME COURT\u2019S FIFTY-YEAR BATTLE FOR A MORE JUST AMERICA .png",
@@ -600,7 +599,8 @@
       "more",
       "just",
       "america"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "MICHAEL J. GRAETZ & LINDA GREENHOUSE, THE BURGER COURT AND THE RISE OF THE JUDICIAL RIGHT .png",
@@ -614,15 +614,15 @@
       "rise",
       "judicial",
       "right"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Maher v Roe, 432 U.S. 471.pdf",
     "tokens": [
-      "maher",
-      "432",
-      "471"
-    ]
+      "maher"
+    ],
+    "type": "case"
   },
   {
     "filename": "San Antonio Independent School Dist. v. Rodriguez, 411 U.S. 1.pdf",
@@ -631,10 +631,9 @@
       "independent",
       "school",
       "dist",
-      "rodriguez",
-      "411",
-      "1"
-    ]
+      "rodriguez"
+    ],
+    "type": "case"
   },
   {
     "filename": "Nice \u2013 Equal Protection\u2019s Antinomies and the Promise of a Co-Constitutive Approach.pdf",
@@ -646,25 +645,24 @@
       "promise",
       "constitutive",
       "approach"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Frontiero v. Richardson - 411 U.S. 677.pdf",
     "tokens": [
       "frontiero",
-      "richardson",
-      "411",
-      "677"
-    ]
+      "richardson"
+    ],
+    "type": "case"
   },
   {
     "filename": "Weber v. Aetna Cas. & Sur. Co. - 406 U.S. 164.pdf",
     "tokens": [
       "weber",
-      "aetna",
-      "406",
-      "164"
-    ]
+      "aetna"
+    ],
+    "type": "case"
   },
   {
     "filename": "City of Cleburne Tex v. Cleburne Living Center-473 U.S. 432 .pdf",
@@ -673,19 +671,17 @@
       "cleburne",
       "cleburne",
       "living",
-      "center",
-      "473",
-      "432"
-    ]
+      "center"
+    ],
+    "type": "case"
   },
   {
     "filename": "Lawrence v. Texas - 539 U.S. 558 .pdf",
     "tokens": [
       "lawrence",
-      "texas",
-      "539",
-      "558"
-    ]
+      "texas"
+    ],
+    "type": "case"
   },
   {
     "filename": "Barnes \u2013 Disparate Treatment of Race and Class in Constitutional Jurisprudence .pdf",
@@ -697,7 +693,8 @@
       "class",
       "constitutional",
       "jurisprudence"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Bridges \u2013 Towards a Theory of State Visibility- Race, Poverty, and Equal Protection .pdf",
@@ -711,7 +708,8 @@
       "poverty",
       "equal",
       "protection"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Greene \u2013 Theory of Poverty- Legal Immobility.pdf",
@@ -721,17 +719,17 @@
       "poverty",
       "legal",
       "immobility"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Massachusetts Bd of Retirement v. Murgia - 427 U.S. 307.pdf",
     "tokens": [
       "massachusetts",
       "retirement",
-      "murgia",
-      "427",
-      "307"
-    ]
+      "murgia"
+    ],
+    "type": "case"
   },
   {
     "filename": "Ross \u2013 Measuring Political Power_ Suspect Class Determinations and the Poor  .pdf",
@@ -744,7 +742,8 @@
       "class",
       "determinations",
       "poor"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Gilens \u2013 Affluence and Influence- Economic Inequality and Political Power in America.pdf",
@@ -757,7 +756,8 @@
       "political",
       "power",
       "america"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Kadrmas v. Dickinson Public Schools - 487 U.S. 450 .pdf",
@@ -765,19 +765,17 @@
       "kadrmas",
       "dickinson",
       "public",
-      "schools",
-      "487",
-      "450"
-    ]
+      "schools"
+    ],
+    "type": "case"
   },
   {
     "filename": "Ortwein v. Schwab - 410 U.S. 656 .pdf",
     "tokens": [
       "ortwein",
-      "schwab",
-      "410",
-      "656"
-    ]
+      "schwab"
+    ],
+    "type": "case"
   },
   {
     "filename": "Citizens United v. Federal Election Com\u2019n - 558 U.S. 310  .pdf",
@@ -786,47 +784,42 @@
       "united",
       "federal",
       "election",
-      "com\u2019n",
-      "558",
-      "310"
-    ]
+      "com\u2019n"
+    ],
+    "type": "case"
   },
   {
     "filename": "U.S. Dept. of Agriculture v. Moreno-413 U.S. 528.pdf",
     "tokens": [
       "dept",
       "agriculture",
-      "moreno",
-      "413",
-      "528"
-    ]
+      "moreno"
+    ],
+    "type": "case"
   },
   {
     "filename": "Romer v. Evans-517 U.S. 620.pdf",
     "tokens": [
       "romer",
-      "evans",
-      "517",
-      "620"
-    ]
+      "evans"
+    ],
+    "type": "case"
   },
   {
     "filename": "Dandridge v. Williams-397 U.S. 471.pdf",
     "tokens": [
       "dandridge",
-      "williams",
-      "397",
-      "471"
-    ]
+      "williams"
+    ],
+    "type": "case"
   },
   {
     "filename": "Goldberg v Kelly-397 U.S. 254.pdf",
     "tokens": [
       "goldberg",
-      "kelly",
-      "397",
-      "254"
-    ]
+      "kelly"
+    ],
+    "type": "case"
   },
   {
     "filename": "Nice-A Sweeping Refusal of Equal Protection.pdf",
@@ -836,43 +829,42 @@
       "refusal",
       "equal",
       "protection"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Snell v Wyman -281 F.Supp.853.pdf",
     "tokens": [
       "snell",
       "wyman",
-      "281",
       "f.supp.853"
-    ]
+    ],
+    "type": "case"
   },
   {
     "filename": "F.C.C. v. Beach Commc\u2019ns, Inc.-508 U.S. 307.pdf",
     "tokens": [
       "f.c.c",
       "beach",
-      "commc\u2019ns",
-      "508",
-      "307"
-    ]
+      "commc\u2019ns"
+    ],
+    "type": "case"
   },
   {
     "filename": "Vance v Bradley-440 U.S. 93.pdf",
     "tokens": [
       "vance",
-      "bradley",
-      "440",
-      "93"
-    ]
+      "bradley"
+    ],
+    "type": "case"
   },
   {
     "filename": "HNH2019-Housing Not Handcuffs.pdf",
     "tokens": [
-      "hnh2019",
       "housing",
       "handcuffs"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Kimel v Florida Board of Regents-528 U.S. 62.pdf",
@@ -880,10 +872,9 @@
       "kimel",
       "florida",
       "board",
-      "regents",
-      "528",
-      "62"
-    ]
+      "regents"
+    ],
+    "type": "case"
   },
   {
     "filename": "O\u2019Flaherty, Aggregate-Level Inferences from Individual-Level Data_ The Case of Permanent Supportive Housing and Housing First pdf.pdf",
@@ -902,7 +893,8 @@
       "housing",
       "housing",
       "first"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Raven_ A randomized trial of permanent supportive housing for chronically homeless persons with high use of publicly funded services,.pdf",
@@ -921,7 +913,8 @@
       "publicly",
       "funded",
       "services"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Lebovits-Socially Constructed Deviancy.pdf",
@@ -930,7 +923,8 @@
       "socially",
       "constructed",
       "deviancy"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Hauber-Criminalization of the Unhoused.pdf",
@@ -938,7 +932,8 @@
       "hauber",
       "criminalization",
       "unhoused"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "GrantsPass-Grants Pass Case.pdf",
@@ -947,7 +942,8 @@
       "grants",
       "pass",
       "case"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Whole Womans Health v Hellerstedt.pdf",
@@ -956,7 +952,8 @@
       "womans",
       "health",
       "hellerstedt"
-    ]
+    ],
+    "type": "case"
   },
   {
     "filename": "Gray-Garcia - Sweeping in Rain.pdf",
@@ -965,7 +962,8 @@
       "garcia",
       "sweeping",
       "rain"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Martin v City of Boise-902 F.3d 584.pdf",
@@ -973,10 +971,9 @@
       "martin",
       "city",
       "boise",
-      "902",
-      "f.3d",
-      "584"
-    ]
+      "f.3d"
+    ],
+    "type": "case"
   },
   {
     "filename": "Abrams - Three years after making camping a felony, Tennessee lawmakers add more homelessness penalties.pdf",
@@ -993,14 +990,16 @@
       "more",
       "homelessness",
       "penalties"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Housing Not Handcuffs.pdf",
     "tokens": [
       "housing",
       "handcuffs"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Jeong - The State of Homelessness Criminalization in California After Grants Pass v. Johnson.pdf",
@@ -1014,7 +1013,8 @@
       "grants",
       "pass",
       "johnson"
-    ]
+    ],
+    "type": "case"
   },
   {
     "filename": "Johnson - Grants Pass v. Johnson Brief for Respondents.pdf",
@@ -1025,16 +1025,16 @@
       "johnson",
       "brief",
       "respondents"
-    ]
+    ],
+    "type": "case"
   },
   {
     "filename": "Robinson v California-370 U.S. 660.pdf",
     "tokens": [
       "robinson",
-      "california",
-      "370",
-      "660"
-    ]
+      "california"
+    ],
+    "type": "case"
   },
   {
     "filename": "City of Grants Pass Oregon v Johnson-603 U.S. 520.pdf",
@@ -1043,10 +1043,9 @@
       "grants",
       "pass",
       "oregon",
-      "johnson",
-      "603",
-      "520"
-    ]
+      "johnson"
+    ],
+    "type": "case"
   },
   {
     "filename": "Martin v City of Boise - 902 F.3d 618",
@@ -1054,10 +1053,9 @@
       "martin",
       "city",
       "boise",
-      "902",
-      "f.3d",
-      "618"
-    ]
+      "f.3d"
+    ],
+    "type": "case"
   },
   {
     "filename": "Martin v City of Boise - 902 F.3d 1031.pdf",
@@ -1065,10 +1063,9 @@
       "martin",
       "city",
       "boise",
-      "902",
-      "f.3d",
-      "1031"
-    ]
+      "f.3d"
+    ],
+    "type": "case"
   },
   {
     "filename": "City of Grants Pass Oregon v Johnson - 603 U.S. 520",
@@ -1077,10 +1074,9 @@
       "grants",
       "pass",
       "oregon",
-      "johnson",
-      "603",
-      "520"
-    ]
+      "johnson"
+    ],
+    "type": "case"
   },
   {
     "filename": "Regimbal - Calif. incorporates new city for the first time in more than a decade.pdf",
@@ -1094,22 +1090,22 @@
       "more",
       "than",
       "decade"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "US Census Bureau -CB12-161.pdf",
     "tokens": [
       "census",
       "bureau",
-      "cb12",
-      "161"
-    ]
+      "cb12"
+    ],
+    "type": "unknown"
   },
   {
     "filename": "No Author - Agenda47_ Ending the Nightmare of the Homeless, Drug Addicts, and Dangerously Deranged _ Agenda47 _ Donald J. Trump.pdf",
     "tokens": [
       "author",
-      "agenda47",
       "ending",
       "nightmare",
       "homeless",
@@ -1117,10 +1113,10 @@
       "addicts",
       "dangerously",
       "deranged",
-      "agenda47",
       "donald",
       "trump"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "No Author - Housing First_ A Review of the Evidence _ HUDU SER.pdf",
@@ -1131,7 +1127,8 @@
       "review",
       "evidence",
       "hudu"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Riley - Homeless Advocacy.pdf",
@@ -1139,7 +1136,8 @@
       "riley",
       "homeless",
       "advocacy"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Davis-Housing First is a Matter of Health - National Alliance to End Homelessness.pdf",
@@ -1152,7 +1150,8 @@
       "national",
       "alliance",
       "homelessness"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Peng-Permanent Supportive Housing with Housing First .pdf",
@@ -1164,19 +1163,18 @@
       "with",
       "housing",
       "first"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "UtahHB0329.pdf",
-    "tokens": [
-      "utahhb0329"
-    ]
+    "tokens": [],
+    "type": "unknown"
   },
   {
     "filename": "Trump-Agenda47_ Ending the Nightmare of the Homeless, Drug Addicts, and Dangerously Deranged _ Agenda47 _ Donald J. Trump.pdf",
     "tokens": [
       "trump",
-      "agenda47",
       "ending",
       "nightmare",
       "homeless",
@@ -1184,24 +1182,25 @@
       "addicts",
       "dangerously",
       "deranged",
-      "agenda47",
       "donald",
       "trump"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Trump-ExecutiveOrder14321.pdf",
     "tokens": [
-      "trump",
-      "executiveorder14321"
-    ]
+      "trump"
+    ],
+    "type": "article"
   },
   {
     "filename": "Castaldi-StateAndLocalPolicyMakersShouldAdvancePoliciesPrioritizingStabilityAndDignityToSolveHomelessness.pdf",
     "tokens": [
       "castaldi",
       "stateandlocalpolicymakersshouldadvancepoliciesprioritizingstabilityanddignitytosolvehomelessness"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "National Homeless Law Center-Housing Not Handcuffs Emergent Threat Map.pdf",
@@ -1213,7 +1212,8 @@
       "handcuffs",
       "emergent",
       "threat"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Jiun Jeong et al-The State of Homelessness Criminalization in California After Grants Pass v. Johnson.pdf",
@@ -1228,17 +1228,17 @@
       "grants",
       "pass",
       "johnson"
-    ]
+    ],
+    "type": "case"
   },
   {
     "filename": "City of Elmira-Ordinance 2024-361.pdf",
     "tokens": [
       "city",
       "elmira",
-      "ordinance",
-      "2024",
-      "361"
-    ]
+      "ordinance"
+    ],
+    "type": "statute"
   },
   {
     "filename": "Nicolas Dubina-Elmira Residents React to New Law Criminalizing Homeless Camping.pdf",
@@ -1251,7 +1251,8 @@
       "criminalizing",
       "homeless",
       "camping"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Stewart-The Unhoused Rarely Have the Money to Pay Fines, Yet Over and Over They Are Ticketed, Compouding Problems.pdf",
@@ -1268,7 +1269,8 @@
       "ticketed",
       "compouding",
       "problems"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Duluth, Minn-Ordinance amending Duluth City Code ch. 34 \u00a7 34-46 .pdf",
@@ -1279,19 +1281,17 @@
       "amending",
       "duluth",
       "city",
-      "code",
-      "34",
-      "34",
-      "46"
-    ]
+      "code"
+    ],
+    "type": "statute"
   },
   {
     "filename": "CS_CS_HB 1365 Text_Florida.pdf",
     "tokens": [
-      "1365",
       "text",
       "florida"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Illinois Municipal League -template bill.pdf",
@@ -1301,24 +1301,24 @@
       "league",
       "template",
       "bill"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Proposition 312.pdf",
     "tokens": [
-      "proposition",
-      "312"
-    ]
+      "proposition"
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Arizona Revised Statutes \u00a7 42-17451.pdf",
     "tokens": [
       "arizona",
       "revised",
-      "statutes",
-      "42",
-      "17451"
-    ]
+      "statutes"
+    ],
+    "type": "statute"
   },
   {
     "filename": "Bailey-Utah House Bill 329.pdf",
@@ -1326,9 +1326,9 @@
       "bailey",
       "utah",
       "house",
-      "bill",
-      "329"
-    ]
+      "bill"
+    ],
+    "type": "article"
   },
   {
     "filename": "Tars-Post-Grants Pass Criminalization Tracker.pdf",
@@ -1339,21 +1339,22 @@
       "pass",
       "criminalization",
       "tracker"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "SB 484-Oklahoma.PDF",
     "tokens": [
-      "484",
       "oklahoma"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "SB 2623-Texas.pdf",
     "tokens": [
-      "2623",
       "texas"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Kelly-Oklahoma Bill Could Ban Almost All Cities from Offering Homeless Outreach, Shutter Shelters.pdf",
@@ -1370,7 +1371,8 @@
       "outreach",
       "shutter",
       "shelters"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "McKim_Texas Bill Would Force Homeless Service Providers to Relocate if Too Close to Schools.pdf",
@@ -1386,18 +1388,18 @@
       "relocate",
       "close",
       "schools"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "House Bill 1365 (2024) - The Florida Senate.pdf",
     "tokens": [
       "house",
       "bill",
-      "1365",
-      "2024",
       "florida",
       "senate"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Hodges_No Shelter Here_ Florida\u2019s New Anti-Vagrancy Law Misses the Point.pdf",
@@ -1410,17 +1412,16 @@
       "vagrancy",
       "misses",
       "point"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "TENN. CODE ANN. \u00a7 39-14-414.pdf",
     "tokens": [
       "tenn",
-      "code",
-      "39",
-      "14",
-      "414"
-    ]
+      "code"
+    ],
+    "type": "statute"
   },
   {
     "filename": "Abrams_Three years after making camping a felony, Tennessee lawmakers add more homelessness penalties.pdf",
@@ -1437,7 +1438,8 @@
       "more",
       "homelessness",
       "penalties"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "National Law Center on Homelessness & Poverty_Tracking the Criminalization of Homelessness.pdf",
@@ -1449,7 +1451,8 @@
       "tracking",
       "criminalization",
       "homelessness"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Western Regional Advocacy Project_Street Outreach.pdf",
@@ -1460,7 +1463,8 @@
       "project",
       "street",
       "outreach"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Sweep Street Outreach Form.pdf",
@@ -1469,7 +1473,8 @@
       "street",
       "outreach",
       "form"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "NoAuthor_HouseKeys Not Handcuffs Sweeps Fact Sheet August 11 2025.pdf",
@@ -1480,10 +1485,9 @@
       "sweeps",
       "fact",
       "sheet",
-      "august",
-      "11",
-      "2025"
-    ]
+      "august"
+    ],
+    "type": "article"
   },
   {
     "filename": "NHCHC_Encampment sweeps issue brief Dec 2022.pdf",
@@ -1492,9 +1496,9 @@
       "encampment",
       "sweeps",
       "issue",
-      "brief",
-      "2022"
-    ]
+      "brief"
+    ],
+    "type": "article"
   },
   {
     "filename": "Clayton & Sanchez \u2013 Protecting Unhoused Patients from the Harms of Encampment Sweeps.pdf",
@@ -1508,7 +1512,8 @@
       "harms",
       "encampment",
       "sweeps"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Barocas-Population-Level Health Effects of Involuntary Displacement of People Experiencing Unsheltered Homelessness Who Inject Drugs in US Cities.pdf",
@@ -1527,7 +1532,8 @@
       "inject",
       "drugs",
       "cities"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Rambo-Portland Said It Was Investing in Homeless People\u2019s Safety Deaths Have Quadrupled.pdf",
@@ -1542,7 +1548,8 @@
       "deaths",
       "have",
       "quadrupled"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Raby & Proctor-Family, activists demand pause on homeless encampment sweeps after Atlanta man_s death.pdf",
@@ -1559,7 +1566,8 @@
       "after",
       "atlanta",
       "death"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Reynolds-Atlanta restarts homeless encampment sweeps after pause caused by death.pdf",
@@ -1574,7 +1582,8 @@
       "pause",
       "caused",
       "death"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Jeong_The State of Homelessness Criminalization in California After Grants Pass v. Johnson.pdf",
@@ -1588,45 +1597,48 @@
       "grants",
       "pass",
       "johnson"
-    ]
+    ],
+    "type": "case"
   },
   {
     "filename": "SantaMonica-Ordinance2789.pdf",
     "tokens": [
-      "santamonica",
-      "ordinance2789"
-    ]
+      "santamonica"
+    ],
+    "type": "article"
   },
   {
     "filename": "Hall-SantaMonicaDailyPress.pdf",
     "tokens": [
       "hall",
       "santamonicadailypress"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "White-AddressingHomelessnessSantaMonica.pdf",
     "tokens": [
       "white",
       "addressinghomelessnesssantamonica"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "SantaClara-MunicipalCode1250.010.pdf",
     "tokens": [
       "santaclara",
       "municipalcode1250.010"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Newsom_Executive Order N-1-24.pdf",
     "tokens": [
       "newsom",
       "executive",
-      "order",
-      "1",
-      "24"
-    ]
+      "order"
+    ],
+    "type": "article"
   },
   {
     "filename": "Newsom, Model Ordinance- Addressing Encampments with Urgency and Dignity.pdf",
@@ -1639,7 +1651,8 @@
       "with",
       "urgency",
       "dignity"
-    ]
+    ],
+    "type": "statute"
   },
   {
     "filename": "Orihuela_Public Encampments Are Now Illegal in Fresno County Following Board Decision.pdf",
@@ -1653,7 +1666,8 @@
       "following",
       "board",
       "decision"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "San Benito County_Ordinance Ch. 11.18.pdf",
@@ -1662,17 +1676,17 @@
       "county",
       "ordinance",
       "11.18"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Mariposa County_Ordinance No. 2024-1192.pdf",
     "tokens": [
       "mariposa",
       "county",
-      "ordinance",
-      "2024",
-      "1192"
-    ]
+      "ordinance"
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Fresno County_Ordinance Ch. 10.70.pdf",
@@ -1681,7 +1695,8 @@
       "county",
       "ordinance",
       "10.70"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Sheehan_\u2018Tough Love\u2019 for Homeless in Fresno\u2019s New No-Camping Law.pdf",
@@ -1692,7 +1707,8 @@
       "homeless",
       "fresno\u2019s",
       "camping"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Har_Silicon Valley city makes homeless people eligible for arrest if they refuse 3 offers of shelter.pdf",
@@ -1707,10 +1723,10 @@
       "arrest",
       "they",
       "refuse",
-      "3",
       "offers",
       "shelter"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Fremont City_AN ORDINANCE OF THE CITY COUNCIL OF THE CITY OF FREMONT ADOPTING CHAPTER 8.90 OF FREMONT MUNICIPAL CODE TO ADOPT A CAMPING ORDINANCE.pdf",
@@ -1731,7 +1747,8 @@
       "adopt",
       "camping",
       "ordinance"
-    ]
+    ],
+    "type": "statute"
   },
   {
     "filename": "Fremont_Ordinance of the City of Fremont Adopting Chapter 8.90 of Fremont Municipal Code to Adopt a Camping Ordinance .pdf",
@@ -1749,7 +1766,8 @@
       "adopt",
       "camping",
       "ordinance"
-    ]
+    ],
+    "type": "statute"
   },
   {
     "filename": "City of Fremont, Cal_Fremont City Council Adopts New City-Wide Camping Ordinance.pdf",
@@ -1764,7 +1782,8 @@
       "wide",
       "camping",
       "ordinance"
-    ]
+    ],
+    "type": "statute"
   },
   {
     "filename": "Torrez and Sayre_Fremont passes 1st -of-its-kind ordinance tackling homelessness.pdf",
@@ -1777,7 +1796,8 @@
       "ordinance",
       "tackling",
       "homelessness"
-    ]
+    ],
+    "type": "statute"
   },
   {
     "filename": "Martinez - Fremont Takes Out _Aiding and Abetting Encampment_ Part Out of City_s Homeless Camp Ban.pdf",
@@ -1792,7 +1812,8 @@
       "city",
       "homeless",
       "camp"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Russell - Homeless Advocates Sue Fremont Over Anti-Camping Ordinance.pdf",
@@ -1805,7 +1826,8 @@
       "anti",
       "camping",
       "ordinance"
-    ]
+    ],
+    "type": "statute"
   },
   {
     "filename": "California Homeless Union v. City of Fremont - Not Reported.pdf",
@@ -1816,7 +1838,8 @@
       "city",
       "fremont",
       "reported"
-    ]
+    ],
+    "type": "case"
   },
   {
     "filename": "McGhee - California_s Political Geography 2020.pdf",
@@ -1824,16 +1847,17 @@
       "mcghee",
       "california",
       "political",
-      "geography",
-      "2020"
-    ]
+      "geography"
+    ],
+    "type": "article"
   },
   {
     "filename": "SanFranciscoPublicWorks-BagandTagProcess.pdf",
     "tokens": [
       "sanfranciscopublicworks",
       "bagandtagprocess"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Alvarado-SF Fails to Produce Evidence It Follows Encampment Clearing Policy.pdf",
@@ -1846,7 +1870,8 @@
       "encampment",
       "clearing",
       "policy"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Santa Cruz, Fields, & Talbot. - Homeless People Often Aren_t Reunited With Belongings Taken by Cities, ProPublica.pdf",
@@ -1865,7 +1890,8 @@
       "taken",
       "cities",
       "propublica"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Kendall-Homeless-related arrests, citations soared in these California cities after Supreme Court case.pdf",
@@ -1883,7 +1909,8 @@
       "supreme",
       "court",
       "case"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Barmann-Day Around the Bay- SFPD Has Arrested Over 750 Homeless For Illegal Camping.pdf",
@@ -1893,11 +1920,11 @@
       "sfpd",
       "arrested",
       "over",
-      "750",
       "homeless",
       "illegal",
       "camping"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Angst-Illegal Camping Arrests of Homeless Are Soaring in S.F..pdf",
@@ -1908,7 +1935,8 @@
       "arrests",
       "homeless",
       "soaring"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Kadvany-Boichik and Berkeley businesses sue over homeless encampments.pdf",
@@ -1920,7 +1948,8 @@
       "over",
       "homeless",
       "encampments"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Complaint for Enjoinder of Public Nuisance and Enjoinder of Private Nuisance.pdf",
@@ -1932,7 +1961,8 @@
       "enjoinder",
       "private",
       "nuisance"
-    ]
+    ],
+    "type": "case_doc"
   },
   {
     "filename": "City of San Jose-Oversized and Lived-in Vehicle Enforcement.pdf",
@@ -1943,7 +1973,8 @@
       "lived",
       "vehicle",
       "enforcement"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Patel-San Jose bulks up enforcement on RV encampments.pdf",
@@ -1953,19 +1984,19 @@
       "bulks",
       "enforcement",
       "encampments"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "City of San Jose-2025-2026 Proposed Operating Budget.pdf",
     "tokens": [
       "city",
       "jose",
-      "2025",
-      "2026",
       "proposed",
       "operating",
       "budget"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Rancano-Death of Man in Vallejo Cleanup Sparks Concerns Over Encampment Sweeps, KQED.pdf",
@@ -1980,7 +2011,8 @@
       "encampment",
       "sweeps",
       "kqed"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "Where Do We Go-home page.pdf",
@@ -1988,7 +2020,8 @@
       "where",
       "home",
       "page"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "House Keys Not Handcuffs, Street Outreach Fact Sheet Report.pdf",
@@ -2001,7 +2034,8 @@
       "fact",
       "sheet",
       "report"
-    ]
+    ],
+    "type": "case_doc"
   },
   {
     "filename": "Chang et al-Harms of encampment abatements on the health of unhoused people.pdf",
@@ -2013,7 +2047,8 @@
       "health",
       "unhoused",
       "people"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Jayapal & Frost-Jayapal, Frost Introduce Legislation to Decriminalize Homelessness.pdf",
@@ -2026,7 +2061,8 @@
       "legislation",
       "decriminalize",
       "homelessness"
-    ]
+    ],
+    "type": "unknown"
   },
   {
     "filename": "Foscarinis-And Housing for All- The Fight to End Homelessness in America.pdf",
@@ -2036,7 +2072,8 @@
       "fight",
       "homelessness",
       "america"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "City of Grants Pass v. Johnson, 603 U.S. 520.pdf",
@@ -2044,10 +2081,9 @@
       "city",
       "grants",
       "pass",
-      "johnson",
-      "603",
-      "520"
-    ]
+      "johnson"
+    ],
+    "type": "case"
   },
   {
     "filename": "United States v Skrmetti, 145 S.Ct. 1816.pdf",
@@ -2055,20 +2091,18 @@
       "united",
       "states",
       "skrmetti",
-      "145",
-      "s.ct",
-      "1816"
-    ]
+      "s.ct"
+    ],
+    "type": "case"
   },
   {
     "filename": "Lindsley v Natural Carbonic Gas Co, 220 U.S. 61.pdf",
     "tokens": [
       "lindsley",
       "natural",
-      "carbonic",
-      "220",
-      "61"
-    ]
+      "carbonic"
+    ],
+    "type": "case"
   },
   {
     "filename": "Amicus Brief of the National Law Center on Homelessness & Poverty in Support of Plaintiff\u2019s Motion for Summary Judgment, 2020 WL 5651849.pdf",
@@ -2083,10 +2117,9 @@
       "plaintiff\u2019s",
       "motion",
       "summary",
-      "judgment",
-      "2020",
-      "5651849"
-    ]
+      "judgment"
+    ],
+    "type": "case_doc"
   },
   {
     "filename": "City of Grants Pass v. Johnson, 603 U.S. 520.pdf",
@@ -2094,18 +2127,16 @@
       "city",
       "grants",
       "pass",
-      "johnson",
-      "603",
-      "520"
-    ]
+      "johnson"
+    ],
+    "type": "case"
   },
   {
     "filename": "Complaint-2019 WL 11070914.pdf",
     "tokens": [
-      "complaint",
-      "2019",
-      "11070914"
-    ]
+      "complaint"
+    ],
+    "type": "article"
   },
   {
     "filename": "FN49_Rankin-Punishing Homelessness",
@@ -2113,7 +2144,8 @@
       "rankin",
       "punishing",
       "homelessness"
-    ]
+    ],
+    "type": "article"
   },
   {
     "filename": "FN1_City of Grants Pass v. Johnson, 603 U.S. 520",
@@ -2121,17 +2153,223 @@
       "city",
       "grants",
       "pass",
-      "johnson",
-      "603",
-      "520"
-    ]
+      "johnson"
+    ],
+    "type": "case"
   },
   {
     "filename": "FN10_Complaint-2019 WL 11070914",
     "tokens": [
-      "complaint",
-      "2019",
-      "11070914"
-    ]
+      "complaint"
+    ],
+    "type": "article"
+  },
+  {
+    "filename": "FN15_ABA Memo Relating to Increasing the Number of Required Experiential Learning Credits",
+    "tokens": [
+      "memo",
+      "relating",
+      "increasing",
+      "number",
+      "required",
+      "experiential",
+      "learning",
+      "credits"
+    ],
+    "type": "unknown"
+  },
+  {
+    "filename": "FN17_Marcus-A Looming \u2018Demographic Cliff\u2019: Fewer College Students and Ultimately Fewer Graduates",
+    "tokens": [
+      "marcus",
+      "looming",
+      "\u2018demographic",
+      "cliff\u2019",
+      "fewer",
+      "college",
+      "students",
+      "ultimately",
+      "fewer",
+      "graduates"
+    ],
+    "type": "article"
+  },
+  {
+    "filename": "FN1_Winks - Why Is Music in Video Games So Important",
+    "tokens": [
+      "winks",
+      "music",
+      "video",
+      "games",
+      "important"
+    ],
+    "type": "article"
+  },
+  {
+    "filename": "FN2_Brabec & Brabec - Music, Money, and Success",
+    "tokens": [
+      "brabec",
+      "brabec",
+      "music",
+      "money",
+      "success"
+    ],
+    "type": "unknown"
+  },
+  {
+    "filename": "FN3_17 U.S.C. \u00a7 302",
+    "tokens": [
+      "u.s.c"
+    ],
+    "type": "statute"
+  },
+  {
+    "filename": "FN6_17 U.S.C. \u00a7 101",
+    "tokens": [
+      "u.s.c"
+    ],
+    "type": "statute"
+  },
+  {
+    "filename": "FN6_Midway Mfg. Co. v. Bandai-Am., Inc., 546 F. Supp. 125",
+    "tokens": [
+      "midway",
+      "bandai",
+      "supp"
+    ],
+    "type": "case"
+  },
+  {
+    "filename": "FN7_Buffalo Broad. Co. v. Am. Soc\u2019y of Composers, Authors & Publishers, 744 F.2d 917",
+    "tokens": [
+      "buffalo",
+      "broad",
+      "soc\u2019y",
+      "composers",
+      "authors",
+      "publishers",
+      "f.2d"
+    ],
+    "type": "case"
+  },
+  {
+    "filename": "FN8_O\u2019Neal - A Brief History of Delayed Programming",
+    "tokens": [
+      "o\u2019neal",
+      "brief",
+      "history",
+      "delayed",
+      "programming"
+    ],
+    "type": "case_doc"
+  },
+  {
+    "filename": "FN9_17 U.S.C \u00a7 115",
+    "tokens": [
+      "u.s.c"
+    ],
+    "type": "statute"
+  },
+  {
+    "filename": "FN10_17 U.S.C. \u00a7 106",
+    "tokens": [
+      "u.s.c"
+    ],
+    "type": "statute"
+  },
+  {
+    "filename": "FN11_17 U.S.C. \u00a7114",
+    "tokens": [
+      "u.s.c",
+      "\u00a7114"
+    ],
+    "type": "statute"
+  },
+  {
+    "filename": "FN20_Warren v. Fox Family Worldwide, Inc., 328 F.3d 1136",
+    "tokens": [
+      "warren",
+      "family",
+      "worldwide",
+      "f.3d"
+    ],
+    "type": "case"
+  },
+  {
+    "filename": "FN21_United States v. American Soc. of Composers, Authors and Publishers, 627 F.3d 64",
+    "tokens": [
+      "united",
+      "states",
+      "american",
+      "composers",
+      "authors",
+      "publishers",
+      "f.3d"
+    ],
+    "type": "case"
+  },
+  {
+    "filename": "FN9_17 U.S.C. \u00a7 115",
+    "tokens": [
+      "u.s.c"
+    ],
+    "type": "statute"
+  },
+  {
+    "filename": "FN25_Cue Sheets-ASCAP",
+    "tokens": [
+      "sheets",
+      "ascap"
+    ],
+    "type": "unknown"
+  },
+  {
+    "filename": "FN26_Robinson-Composers Tell Us Why Developers Still Don\u2019t Take Game Music Seriously",
+    "tokens": [
+      "robinson",
+      "composers",
+      "tell",
+      "developers",
+      "still",
+      "don\u2019t",
+      "take",
+      "game",
+      "music",
+      "seriously"
+    ],
+    "type": "article"
+  },
+  {
+    "filename": "FN30_U.S. v. ASCAP, 627 F.3d 64",
+    "tokens": [
+      "ascap",
+      "f.3d"
+    ],
+    "type": "case"
+  },
+  {
+    "filename": "FN32_Valorant Population Statistics-TRACKER NETWORK",
+    "tokens": [
+      "valorant",
+      "population",
+      "statistics",
+      "tracker",
+      "network"
+    ],
+    "type": "unknown"
+  },
+  {
+    "filename": "FN4_17 U.S.C. \u00a7 101",
+    "tokens": [
+      "u.s.c"
+    ],
+    "type": "statute"
+  },
+  {
+    "filename": "FN5_17 U.S.C.A. \u00a7 101",
+    "tokens": [
+      "u.s.c.a"
+    ],
+    "type": "statute"
   }
 ]

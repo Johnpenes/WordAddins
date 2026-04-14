@@ -7,7 +7,7 @@ import shutil
 import re
 
 from footnote_processor import _build_rows, split_sources, assign_source_runs, _classify_source, _extract_display_name, _get_body_sentence
-from bank_matcher import match_filename, add_to_bank, is_back_reference, _citation_tokens, _score
+from bank_matcher import match_filename, add_to_bank, is_back_reference
 from lxml import etree
 
 
@@ -287,69 +287,59 @@ _executor = ThreadPoolExecutor()
 
 def _resolve_root_footnotes(footnotes: list[dict]) -> list[dict]:
     """
-    Second pass: for each source that is a back-reference (fileLabel is empty
-    and text looks like Id./supra/short cite), find the most likely root
-    footnote by scanning backward and token-matching against earlier sources.
+    Second pass: resolve back-references (Id., supra, short cites) to their
+    root footnote number.
 
-    Adds a `rootFn` field (int) to each back-reference source when a root
-    is found, so the frontend can display "Go to Footnote N" navigation.
+    Walk all sources in footnote order maintaining a rolling `current_root`
+    pointer. Every real citation updates the pointer; every Id. inherits it.
+    This correctly handles chains and resets:
+
+        FN A  (real)   → current_root = A
+        FN B  (Id.)    → rootFn = A
+        FN C  (Id.)    → rootFn = A
+        FN D  (real)   → current_root = D   ← chain resets
+        FN E  (Id.)    → rootFn = D
+        FN F  (real)   → current_root = F   ← resets again
+        FN G  (Id.)    → rootFn = F
+
+    Supra note N is resolved directly from the explicit number in the text.
+    Other short cites (reporter-only etc.) fall back to current_root.
     """
-    # Build index: fn_number -> list of (source_text, classification)
-    # Only non-back-reference sources are candidates for being roots.
-    root_candidates: dict[int, list[str]] = {}
-    for fn in footnotes:
-        num = fn.get("number")
-        try:
-            num = int(num)
-        except Exception:
-            continue
-        for src in fn.get("sources", []):
-            cls_str = " ".join(src.get("rules", []))
-            text = src.get("text", "")
-            if not is_back_reference(text, cls_str) and text.strip():
-                root_candidates.setdefault(num, []).append(text)
+    # Sort footnotes by number so the walk is in document order
+    sorted_fns = sorted(footnotes, key=lambda f: int(f.get("number", 0)))
 
-    for fn in footnotes:
+    current_root: int | None = None  # fn number of last real citation seen
+
+    for fn in sorted_fns:
         num = fn.get("number")
         try:
             num = int(num)
         except Exception:
             continue
+
         for src in fn.get("sources", []):
             cls_str = " ".join(src.get("rules", []))
             text = src.get("text", "")
+
             if not is_back_reference(text, cls_str):
+                # Real citation — update the rolling root pointer
+                current_root = num
                 continue
 
-            # Supra note N — footnote number is explicit in the text
+            # Infra points forward — no root resolution
+            if re.search(r"\binfra\b", text, re.IGNORECASE):
+                src["isInfra"] = True
+                continue
+
+            # Supra note N — explicit footnote number wins
             supra_m = re.search(r"\bsupra\s+note\s+(\d+)\b", text, re.IGNORECASE)
             if supra_m:
-                ref = int(supra_m.group(1))
-                if ref in root_candidates:
-                    src["rootFn"] = ref
+                src["rootFn"] = int(supra_m.group(1))
                 continue
 
-            # Pure Id. — root is just the previous non-back-reference footnote
-            c_tokens = _citation_tokens(text)
-            if not c_tokens:
-                for prev_num in range(num - 1, 0, -1):
-                    if prev_num in root_candidates:
-                        src["rootFn"] = prev_num
-                        break
-                continue
-
-            # Score backward through candidates for other short cites
-            best_score, best_fn = 0, None
-            for prev_num in range(num - 1, 0, -1):
-                for cand_text in root_candidates.get(prev_num, []):
-                    cand_tokens = _citation_tokens(cand_text)
-                    s = _score(c_tokens, cand_tokens)
-                    if s > best_score:
-                        best_score = s
-                        best_fn = prev_num
-
-            if best_fn is not None and best_score >= 1:
-                src["rootFn"] = best_fn
+            # Id. or other short cite — inherit current rolling root
+            if current_root is not None:
+                src["rootFn"] = current_root
 
     return footnotes
 
@@ -376,5 +366,6 @@ async def add_to_bank_endpoint(data: dict):
     filename = data.get("filename", "").strip()
     if not filename:
         return {"ok": False, "error": "filename required"}
-    add_to_bank(filename)
+    classification = data.get("classification", "")
+    add_to_bank(filename, classification)
     return {"ok": True}

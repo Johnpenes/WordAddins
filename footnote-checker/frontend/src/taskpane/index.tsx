@@ -278,13 +278,13 @@ const App = () => {
     Array.isArray(src?.rules) &&
     src.rules.some((r: string) => r.includes("Rule 4.1") || r.includes("Rule 4.2"));
 
-  const confirmFileLabel = async (key: string, filename: string) => {
+  const confirmFileLabel = async (key: string, filename: string, classification: string) => {
     if (!filename.trim()) return;
     try {
       await fetch("https://localhost:3000/api/add-to-bank", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ filename: filename.trim() }),
+        body: JSON.stringify({ filename: filename.trim(), classification }),
       });
       setConfirmed((prev) => ({ ...prev, [key]: true }));
     } catch (err) {
@@ -294,9 +294,16 @@ const App = () => {
 
   const renderFileLabel = (src: any, key: string) => {
     if (isBackReference(src)) {
+      const rootFn: number | undefined = src?.rootFn;
+      const isInfra: boolean = src?.isInfra === true;
+      const msg = isInfra
+        ? "N/A — see infra"
+        : rootFn != null
+        ? `N/A — check root footnote: FN${rootFn}`
+        : "N/A — check root footnote";
       return (
         <div style={{ marginTop: 8, fontSize: 12, color: "#888" }}>
-          <strong>Suggested File Name:</strong> N/A — check root footnote
+          <strong>Suggested File Name:</strong> {msg}
         </div>
       );
     }
@@ -319,7 +326,7 @@ const App = () => {
             style={{ width: "100%", fontSize: 11, padding: "4px 6px", boxSizing: "border-box", resize: "vertical", fontFamily: "Arial" }}
           />
           <button
-            onClick={() => void confirmFileLabel(key, editedValue)}
+            onClick={() => void confirmFileLabel(key, editedValue, src?.rules?.join(" ") ?? "")}
             disabled={isConfirmed || !editedValue.trim()}
             style={{ marginTop: 4, fontSize: 11, padding: "3px 10px", whiteSpace: "nowrap" }}
           >
